@@ -13,6 +13,7 @@ public class ShadowCutter : MonoBehaviour
     [Header("Prompt")]
     [SerializeField] private bool showDebugPrompt = true;
     [SerializeField] private Vector2 promptPosition = new Vector2(24f, 24f);
+    [SerializeField] private Vector2 promptSize = new Vector2(320f, 32f);
 
     [Header("Selection Outline")]
     [SerializeField] private bool showSelectionOutline = true;
@@ -26,6 +27,7 @@ public class ShadowCutter : MonoBehaviour
     private PastedShadowObject currentPastedTarget;
     private string promptText;
     private float promptUntilTime;
+    private bool loggedMissingRevealController;
 
     private void Awake()
     {
@@ -35,6 +37,23 @@ public class ShadowCutter : MonoBehaviour
 
     private void Update()
     {
+        if (!CanCutInRevealView())
+        {
+            ClearCurrentTargets();
+            UpdateSelectionOutline();
+
+            if (Input.GetKeyDown(cutKey) && HasCuttableCandidateInRange())
+            {
+                ShowTemporaryPrompt("Hold Shift to reveal shadows", 1.2f);
+            }
+            else
+            {
+                UpdatePromptText();
+            }
+
+            return;
+        }
+
         FindNearestCuttableTarget();
         UpdateSelectionOutline();
         UpdatePromptText();
@@ -60,7 +79,8 @@ public class ShadowCutter : MonoBehaviour
             return;
         }
 
-        GUI.Label(new Rect(promptPosition.x, promptPosition.y, 260f, 32f), promptText);
+        Rect promptRect = GetBottomLeftPromptRect();
+        GUI.Label(promptRect, promptText);
     }
 
     private void FindNearestCuttableTarget()
@@ -103,6 +123,54 @@ public class ShadowCutter : MonoBehaviour
         }
     }
 
+    private bool CanCutInRevealView()
+    {
+        if (RevealViewController.HasInstance)
+        {
+            return RevealViewController.IsActive;
+        }
+
+        if (!loggedMissingRevealController && Input.GetKeyDown(cutKey))
+        {
+            Debug.Log("RevealViewController not found. Cannot cut shadows without Reveal View.");
+            loggedMissingRevealController = true;
+        }
+
+        return false;
+    }
+
+    private void ClearCurrentTargets()
+    {
+        currentTarget = null;
+        currentPastedTarget = null;
+    }
+
+    private bool HasCuttableCandidateInRange()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, cutRange, shadowLayer);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            ShadowInteractable shadow = hits[i].GetComponent<ShadowInteractable>();
+            if (shadow != null && shadow.CanBeCut)
+            {
+                return true;
+            }
+
+            PastedShadowObject pastedShadow = hits[i].GetComponent<PastedShadowObject>();
+            if (pastedShadow == null)
+            {
+                pastedShadow = hits[i].GetComponentInParent<PastedShadowObject>();
+            }
+
+            if (pastedShadow != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void TryCutCurrentTarget()
     {
         if (!inventory.CanCarry())
@@ -114,6 +182,16 @@ public class ShadowCutter : MonoBehaviour
         if (currentPastedTarget != null)
         {
             TryCutPastedTarget();
+            return;
+        }
+
+        LightDrivenShadow lightDrivenShadow = currentTarget.GetComponent<LightDrivenShadow>();
+        if (lightDrivenShadow != null
+            && lightDrivenShadow.RequiresPlantedLanternToCut
+            && !lightDrivenShadow.CanCutNow)
+        {
+            ShowTemporaryPrompt("Plant the lantern first", 1.2f);
+            Debug.Log("Plant the lantern first");
             return;
         }
 
@@ -175,6 +253,13 @@ public class ShadowCutter : MonoBehaviour
     {
         promptText = text;
         promptUntilTime = Time.time + duration;
+    }
+
+    private Rect GetBottomLeftPromptRect()
+    {
+        float x = promptPosition.x;
+        float y = Screen.height - promptPosition.y - promptSize.y;
+        return new Rect(x, y, promptSize.x, promptSize.y);
     }
 
     private void EnsureSelectionOutline()

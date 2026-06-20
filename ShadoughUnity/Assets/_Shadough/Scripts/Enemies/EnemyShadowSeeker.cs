@@ -48,11 +48,6 @@ public class EnemyShadowSeeker : MonoBehaviour
 
     private void RefreshTarget()
     {
-        if (IsValidTarget(currentTarget))
-        {
-            return;
-        }
-
         currentTarget = FindNearestAttractingShadow();
     }
 

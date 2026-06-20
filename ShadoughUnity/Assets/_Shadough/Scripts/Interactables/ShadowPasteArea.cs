@@ -18,6 +18,7 @@ public class ShadowPasteArea : MonoBehaviour
     [Header("Debug Prompt")]
     [SerializeField] private bool showDebugPrompt = true;
     [SerializeField] private Vector2 promptPosition = new Vector2(24f, 56f);
+    [SerializeField] private Vector2 promptSize = new Vector2(320f, 32f);
 
     private Collider2D triggerCollider;
     private ShadowInventory currentInventory;
@@ -104,7 +105,8 @@ public class ShadowPasteArea : MonoBehaviour
             return;
         }
 
-        GUI.Label(new Rect(promptPosition.x, promptPosition.y, 260f, 32f), currentMessage);
+        Rect promptRect = GetBottomLeftPromptRect();
+        GUI.Label(promptRect, currentMessage);
     }
 
     private void TryPaste(ShadowInventory inventory)
@@ -137,6 +139,13 @@ public class ShadowPasteArea : MonoBehaviour
     {
         currentMessage = message;
         messageUntilTime = Time.time + duration;
+    }
+
+    private Rect GetBottomLeftPromptRect()
+    {
+        float x = promptPosition.x;
+        float y = Screen.height - promptPosition.y - promptSize.y;
+        return new Rect(x, y, promptSize.x, promptSize.y);
     }
 
     private void CacheCollider()

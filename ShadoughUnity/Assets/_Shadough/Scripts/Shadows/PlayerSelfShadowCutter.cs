@@ -16,6 +16,7 @@ public class PlayerSelfShadowCutter : MonoBehaviour
     private ShadowInventory inventory;
     private Sprite fallbackSprite;
     private float nextAllowedCutTime;
+    private bool loggedMissingRevealController;
 
     private void Awake()
     {
@@ -39,6 +40,12 @@ public class PlayerSelfShadowCutter : MonoBehaviour
             return;
         }
 
+        if (!CanCutSelfInRevealView())
+        {
+            Debug.Log("Hold Shift to reveal your shadow");
+            return;
+        }
+
         if (inventory.HasShadow())
         {
             Debug.Log("Shadow slot full");
@@ -59,6 +66,22 @@ public class PlayerSelfShadowCutter : MonoBehaviour
 
         nextAllowedCutTime = Time.time + cooldown;
         Debug.Log("Cut self shadow");
+    }
+
+    private bool CanCutSelfInRevealView()
+    {
+        if (RevealViewController.HasInstance)
+        {
+            return RevealViewController.IsActive;
+        }
+
+        if (!loggedMissingRevealController)
+        {
+            Debug.Log("RevealViewController not found. Cannot cut self shadow without Reveal View.");
+            loggedMissingRevealController = true;
+        }
+
+        return false;
     }
 
     private ShadowItemData CreateSelfShadowData()

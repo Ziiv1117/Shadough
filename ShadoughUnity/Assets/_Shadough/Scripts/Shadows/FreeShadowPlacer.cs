@@ -108,8 +108,27 @@ public class FreeShadowPlacer : MonoBehaviour
             return;
         }
 
+        RemoveExistingPlayerShadowIfNeeded(shadowData);
         CreatePastedShadowObject(shadowData, currentPreviewPosition, currentPreviewRotation);
         Debug.Log("Placed free shadow: " + shadowData.shadowType + " at " + currentPreviewPosition);
+    }
+
+    private void RemoveExistingPlayerShadowIfNeeded(ShadowItemData data)
+    {
+        if (data.shadowType != ShadowType.Player)
+        {
+            return;
+        }
+
+        PastedShadowObject[] pastedShadows = FindObjectsOfType<PastedShadowObject>();
+        for (int i = 0; i < pastedShadows.Length; i++)
+        {
+            PastedShadowObject pastedShadow = pastedShadows[i];
+            if (pastedShadow != null && pastedShadow.ShadowType == ShadowType.Player)
+            {
+                Destroy(pastedShadow.gameObject);
+            }
+        }
     }
 
     private void CreatePastedShadowObject(ShadowItemData data, Vector3 position, Quaternion rotation)
