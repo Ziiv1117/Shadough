@@ -1,0 +1,5 @@
+Create ONE standalone Level 01 map concept for Shadough in simple retro pixel art, more pixelated and less detailed than before. 16:9, top-down / slight 3/4 view, chunky 16-bit style, large readable tiles, limited palette, minimal texture, no painterly detail. Dark green Unity-style grid background around the map.
+
+Level 01: Tree shadow river crossing OUTSIDE the mansion. No surrounding walls. Simple exterior path from lower-left to upper-right mansion gate. A wide blue river/canal blocks the path in the center. No complete bridge, no walkway, no bypass. Two separated stone banks with a few broken posts. One old tree on near bank casts a long dark blocky tree-shaped shadow across the water toward the far bank. The shadow reads as cuttable tree shadow, not a bridge.
+
+Keep only core objects: stone path, river, broken crossing, tree, tree shadow, distant府邸 gate. No characters, no enemies, no UI, no labels, no arrows, no text. Very clean tilemap-like pixel art, sparse and readable.

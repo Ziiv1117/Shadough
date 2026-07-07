@@ -6,8 +6,11 @@ public class ShadowLockTrigger : MonoBehaviour
     [SerializeField] private LockController lockController;
     [SerializeField] private bool requireAngleCheck;
     [SerializeField] private float allowedAngleDifference = 20f;
+    [SerializeField] private float failurePromptCooldown = 1.5f;
 
     private Collider2D triggerCollider;
+    private PastedShadowObject lastRejectedShadow;
+    private float nextFailurePromptTime;
 
     public bool RequireAngleCheck => requireAngleCheck;
     public float AllowedAngleDifference => allowedAngleDifference;
@@ -29,6 +32,7 @@ public class ShadowLockTrigger : MonoBehaviour
         CacheComponents();
         SetTriggerCollider();
         allowedAngleDifference = Mathf.Max(0f, allowedAngleDifference);
+        failurePromptCooldown = Mathf.Max(0.25f, failurePromptCooldown);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -73,8 +77,14 @@ public class ShadowLockTrigger : MonoBehaviour
         }
 
         PastedShadowObject pastedShadow = GetPastedShadow(other);
-        if (pastedShadow == null || !pastedShadow.CanUnlock)
+        if (pastedShadow == null)
         {
+            return;
+        }
+
+        if (!pastedShadow.CanUnlock)
+        {
+            ShowFailurePrompt(pastedShadow, "This shadow cannot unlock this door.");
             return;
         }
 
@@ -95,6 +105,18 @@ public class ShadowLockTrigger : MonoBehaviour
         }
 
         return pastedShadow;
+    }
+
+    private void ShowFailurePrompt(PastedShadowObject pastedShadow, string message)
+    {
+        if (pastedShadow == lastRejectedShadow || Time.time < nextFailurePromptTime)
+        {
+            return;
+        }
+
+        lastRejectedShadow = pastedShadow;
+        nextFailurePromptTime = Time.time + failurePromptCooldown;
+        TutorialFailurePromptController.Show(message);
     }
 
     private bool IsAngleAccepted(PastedShadowObject pastedShadow)

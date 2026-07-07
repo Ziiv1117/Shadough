@@ -1,0 +1,1 @@
+﻿4x4 topdown walk loop with no lantern in hand; rows down,left,right,up; right hand holds scissors, left hand empty; solid #FF00FF; no grid; strict safe margin.

@@ -2,11 +2,28 @@
 
 ## 当前版本
 
-Topdown v0.5 Core Properties Prototype
+Topdown v0.6 Demo Loop
 
 ## 当前目标
 
-验证 Shadough 的四个核心影子属性是否能在斜俯视 / Top-down 2D 中成立。
+验证 Shadough 的四个核心影子属性是否能在斜俯视 / Top-down 2D 中成立，并形成从长灯、树影、压板、锁、诱敌到最终钟盘的完整 Demo 闭环。
+
+## 美术方向目标
+
+整个游戏后续统一转向中式像素剪影风。
+
+当前 Topdown 场景仍然是灰盒原型，主要任务是验证玩法闭环。后续视觉整理时，应把场景理解为中式钟楼 / 鼓楼空间，而不是西式钟楼或通用地下城。
+
+优先替换方向：
+
+* 地面：石板路、青砖、旧纸色安全路径。
+* 建筑：青瓦、木梁、窗棂、纸门、屏风。
+* 光源：纸灯笼、长灯、烛台、灯油火光。
+* 机关：铜锁、压板、钟盘、木门、朱砂符线。
+* 影子：皮影、剪纸、墨色块面，保持玩法轮廓清晰。
+* UI：宣纸色提示框、朱砂红强调、像素化中文标题。
+
+美术替换不能改变已验证的影子属性、Collider2D 范围和谜题判定。
 
 ## 当前已实现
 
@@ -19,7 +36,7 @@ Topdown v0.5 Core Properties Prototype
 * CanPress：压力板开门
 * CanUnlock：钥匙影开锁
 * CanAttractEnemy：玩家影子诱敌
-* 到达 Goal_Marker 后 Prototype Complete
+* 到达 FinalClockCore_Topdown 后按 E 显示 Topdown Demo Complete
 
 ## 完整测试流程
 
@@ -37,8 +54,9 @@ Topdown v0.5 Core Properties Prototype
 12. F 贴到 LureArea_Topdown。
 13. 确认 ShadowSeeker_Topdown 被吸引离开通道。
 14. 通过敌人区域。
-15. 到达 Goal_Marker。
-16. 确认 Prototype Complete。
+15. 到达 FinalClockCore_Topdown。
+16. 按 E 启动钟盘。
+17. 确认显示 Topdown Demo Complete。
 
 ## 核心属性回归测试
 
@@ -57,15 +75,16 @@ Topdown v0.5 Core Properties Prototype
 ## 当前限制
 
 * 仍是灰盒视觉。
-* 暂未迁移 FinalClockCore。
+* 已确定后续正式美术方向为中式像素剪影风。
 * 暂未制作正式关卡美术。
 * 暂未制作正式 UI。
-* 旧横版 ClockTower_Demo 仍保留。
+* 旧横版 ClockTower_Demo 已作为旧 Demo 内容归档，不是当前 Topdown 主流程。
 
 ## 下一步建议
 
-* 进行 Topdown 视觉可读性整理。
-* 或迁移 FinalClockCore，形成完整 Topdown Demo 闭环。
+* 按中式像素剪影风进行 Topdown 视觉可读性整理。
+* 先替换核心识别物：地面路线、河流、门、压力板、锁、寻影兽、最终钟盘、可剪影子。
+* 在不改变影子属性和 Collider2D 判定的前提下替换灰盒素材。
 
 ## Visual Readability Pass v0.1
 

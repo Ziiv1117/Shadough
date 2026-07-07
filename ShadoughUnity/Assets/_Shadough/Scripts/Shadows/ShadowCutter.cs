@@ -42,9 +42,16 @@ public class ShadowCutter : MonoBehaviour
             ClearCurrentTargets();
             UpdateSelectionOutline();
 
-            if (Input.GetKeyDown(cutKey) && HasCuttableCandidateInRange())
+            if (Input.GetKeyDown(cutKey))
             {
-                ShowTemporaryPrompt("Hold Shift to reveal shadows", 1.2f);
+                if (HasCuttableCandidateInRange())
+                {
+                    ShowCutFailurePrompt("Hold Shift to reveal cuttable shadows.");
+                }
+                else
+                {
+                    ShowCutFailurePrompt("No cuttable shadow nearby.");
+                }
             }
             else
             {
@@ -58,9 +65,16 @@ public class ShadowCutter : MonoBehaviour
         UpdateSelectionOutline();
         UpdatePromptText();
 
-        if ((currentTarget != null || currentPastedTarget != null) && Input.GetKeyDown(cutKey))
+        if (Input.GetKeyDown(cutKey))
         {
-            TryCutCurrentTarget();
+            if (currentTarget != null || currentPastedTarget != null)
+            {
+                TryCutCurrentTarget();
+            }
+            else
+            {
+                ShowCutFailurePrompt("No cuttable shadow nearby.");
+            }
         }
     }
 
@@ -253,6 +267,12 @@ public class ShadowCutter : MonoBehaviour
     {
         promptText = text;
         promptUntilTime = Time.time + duration;
+    }
+
+    private void ShowCutFailurePrompt(string text)
+    {
+        TutorialFailurePromptController.Show(text);
+        ShowTemporaryPrompt(text, 1.2f);
     }
 
     private Rect GetBottomLeftPromptRect()

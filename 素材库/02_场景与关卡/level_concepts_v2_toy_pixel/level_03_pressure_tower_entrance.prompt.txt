@@ -1,0 +1,7 @@
+Generate ONE Shadough Level 03 concept map only. Style: very low-resolution toy-like retro pixel art, chunky coarse pixels, blocky toy diorama, simple 16-bit tiles, limited 24-color palette, big shapes, no fine texture, no realistic lighting, no ornate detail. Top-down / slight 3/4 view, wide 16:9 composition, dark green Unity planning grid background around the map.
+
+Level 03 content must match the name: ENTERING THE BELL/LANTERN TOWER, PRESSURE PLATE MECHANISM. No river, no tree shadow crossing, no key lock puzzle, no shadow beast, no enemy.
+
+Map layout: simple rectangular tower entrance courtyard inside the府邸. Lower-left entrance. Upper side has a closed tower door or small bell-tower gate. A large square pressure plate is clearly on the floor BEFORE the closed door. Nearby is a simple wooden beam frame or hanging beam object casting one blocky rectangular dark shadow on the floor. The design should imply: cut the beam shadow, paste it onto the pressure plate, open tower door.
+
+Keep it extremely simple and readable: stone floor, low wall blocks, tower door, pressure plate, beam shadow source, rectangular beam shadow, maybe two toy-like lantern blocks. No characters, no player, no enemies, no NPCs, no UI, no labels, no arrows, no text, no callouts.

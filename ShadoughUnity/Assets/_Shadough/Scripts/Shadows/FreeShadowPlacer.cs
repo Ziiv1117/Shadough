@@ -47,6 +47,11 @@ public class FreeShadowPlacer : MonoBehaviour
 
         if (inventory == null || !inventory.HasShadow())
         {
+            if (Input.GetKeyDown(pasteKey))
+            {
+                TutorialFailurePromptController.Show("No shadow to paste.");
+            }
+
             currentPreviewData = null;
             HidePlacementVisuals();
             return;

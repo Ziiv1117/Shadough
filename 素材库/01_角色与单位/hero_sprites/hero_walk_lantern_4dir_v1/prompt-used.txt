@@ -1,0 +1,1 @@
+﻿4x4 topdown walk loop while holding lantern; rows down,left,right,up; columns neutral,left-foot,neutral,right-foot; based on selected hero identity and accepted idle_lantern sheet; solid #FF00FF; no grid; no edge touch.

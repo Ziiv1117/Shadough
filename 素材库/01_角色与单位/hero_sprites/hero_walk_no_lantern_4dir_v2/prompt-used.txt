@@ -1,0 +1,1 @@
+﻿4x4 topdown walk loop with no lantern in hand, v2 regenerated with smaller source subject after edge-touch; rows down,left,right,up; right hand scissors, left hand empty; solid #FF00FF; no grid.

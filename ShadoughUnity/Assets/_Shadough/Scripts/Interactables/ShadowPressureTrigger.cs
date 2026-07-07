@@ -5,9 +5,12 @@ using System.Collections.Generic;
 public class ShadowPressureTrigger : MonoBehaviour
 {
     [SerializeField] private PressurePlateController pressurePlate;
+    [SerializeField] private float failurePromptCooldown = 1.5f;
 
     private Collider2D triggerCollider;
     private readonly List<PastedShadowObject> pressingShadows = new List<PastedShadowObject>();
+    private PastedShadowObject lastRejectedShadow;
+    private float nextFailurePromptTime;
 
     private void Awake()
     {
@@ -28,6 +31,7 @@ public class ShadowPressureTrigger : MonoBehaviour
 
     private void OnValidate()
     {
+        failurePromptCooldown = Mathf.Max(0.25f, failurePromptCooldown);
         CacheComponents();
         SetTriggerCollider();
     }
@@ -51,6 +55,11 @@ public class ShadowPressureTrigger : MonoBehaviour
         }
 
         pressingShadows.Remove(pastedShadow);
+        if (pastedShadow == lastRejectedShadow)
+        {
+            lastRejectedShadow = null;
+        }
+
         RefreshPressureState();
     }
 
@@ -72,8 +81,14 @@ public class ShadowPressureTrigger : MonoBehaviour
         }
 
         PastedShadowObject pastedShadow = GetPastedShadow(other);
-        if (pastedShadow == null || !pastedShadow.CanPress)
+        if (pastedShadow == null)
         {
+            return;
+        }
+
+        if (!pastedShadow.CanPress)
+        {
+            ShowFailurePrompt(pastedShadow, "This shadow cannot press plates.");
             return;
         }
 
@@ -94,6 +109,18 @@ public class ShadowPressureTrigger : MonoBehaviour
         }
 
         return pastedShadow;
+    }
+
+    private void ShowFailurePrompt(PastedShadowObject pastedShadow, string message)
+    {
+        if (pastedShadow == lastRejectedShadow || Time.time < nextFailurePromptTime)
+        {
+            return;
+        }
+
+        lastRejectedShadow = pastedShadow;
+        nextFailurePromptTime = Time.time + failurePromptCooldown;
+        TutorialFailurePromptController.Show(message);
     }
 
     private void RefreshPressureState()

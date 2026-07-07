@@ -1,5 +1,17 @@
 # Version Notes
 
+## Art Direction Update: Chinese Pixel Shadow Style
+
+Status: design direction update only.
+
+Notes:
+
+* Future visual passes should move the topdown prototype toward Chinese pixel art.
+* The graybox `ClockTower_TopdownPrototype` should be reinterpreted as a Chinese bell / drum tower inspired space.
+* Priority props: lanterns, timber beams, tiled roofs, paper screens, carved windows, old stone paths, copper locks, pressure plates, shadow-puppet silhouettes, and ritual clock-core details.
+* Cuttable and pasted shadows must stay readable at gameplay distance.
+* This does not change the current shadow data flow, collider rules, or `PastedShadowObject` property logic.
+
 ## Topdown v0.5 Core Properties Prototype
 
 Status: playable topdown graybox prototype.

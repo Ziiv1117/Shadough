@@ -34,6 +34,12 @@ public class TopdownCameraFollow : MonoBehaviour
         }
 
         Vector3 desiredPosition = GetTargetPosition();
+        if (followSmoothTime <= 0f)
+        {
+            transform.position = desiredPosition;
+            return;
+        }
+
         transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, followSmoothTime);
     }
 

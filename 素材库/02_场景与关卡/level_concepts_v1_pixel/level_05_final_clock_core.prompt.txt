@@ -1,0 +1,5 @@
+Create ONE standalone Level 05 final map concept for Shadough in simple retro pixel art: chunky 16-bit tilemap style, top-down / slight 3/4 view, limited palette, low detail, dark green Unity-style grid background around the room.
+
+Level 05: Final clock core room. This is the final chamber at the top of the Chinese bell tower / lantern tower. Design one clean ceremonial room, not a huge complex map. Entrance from lower-left or bottom, a short stone path leads to a raised central dais. On the dais is a bronze circular clock / bell core mechanism, simple and readable. Surround with four lanterns or small pillars, a few dark paper-cut shadow markings, and grey stone floor. The room should feel like the end goal after all puzzles.
+
+Keep it simple: one final hall, raised platform, bronze clock core, lantern pools, maybe tiled roof gate at the entrance. No characters, no enemies, no UI, no labels, no arrows, no text, no callouts. Pixelated, clean, readable, sparse, not ornate.

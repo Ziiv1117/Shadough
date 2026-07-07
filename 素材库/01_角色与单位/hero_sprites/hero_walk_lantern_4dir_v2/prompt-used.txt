@@ -1,0 +1,1 @@
+﻿4x4 topdown walk loop while holding lantern, regenerated smaller/safer after v1 edge-touch; rows down,left,right,up; columns neutral,left-foot,neutral,right-foot; solid #FF00FF; no grid; strict safe margin.
