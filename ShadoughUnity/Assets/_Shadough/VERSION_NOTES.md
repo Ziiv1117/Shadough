@@ -1,5 +1,19 @@
 # Version Notes
 
+## Asset Documentation Structure Refresh
+
+Date: 2026-07-08
+
+Status: documentation-only update.
+
+Notes:
+
+* Root asset planning now lives in `素材库/完整素材清单.md`.
+* Each asset category folder has its own `素材清单.md`.
+* Scene and level assets currently use the numbered folder structure under `素材库/02_场景与关卡`.
+* Player-shadow concept reference belongs to `素材库/01_角色与单位`; player-shadow runtime/mechanic assets belong to `素材库/03_影子系统`.
+* This note does not change the Unity scene, script behavior, collider rules, or `PastedShadowObject` property logic.
+
 ## Art Direction Update: Chinese Pixel Shadow Style
 
 Status: design direction update only.

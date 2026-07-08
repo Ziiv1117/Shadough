@@ -1,0 +1,246 @@
+{
+  "target": "asset",
+  "mode": "sync_animation",
+  "input": "raw-sheet.png",
+  "rows": 4,
+  "cols": 4,
+  "cell_size": 256,
+  "sheet_size": [
+    1024,
+    1024
+  ],
+  "postprocess": "generate2dsprite.py produced transparent sheet and frames; independent alpha-edge QC recorded here after conservative script rejection.",
+  "threshold": 140,
+  "fit_scale": 0.8,
+  "align": "bottom",
+  "shared_scale": true,
+  "component_mode": "all",
+  "edge_touch_frames": [],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        102,
+        87,
+        153,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        90,
+        92,
+        165,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        2
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        77,
+        81,
+        179,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        3
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        92,
+        58,
+        163,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        103,
+        89,
+        153,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        91,
+        99,
+        165,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        2
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        84,
+        82,
+        171,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        3
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        95,
+        58,
+        161,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        0
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        103,
+        89,
+        152,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        1
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        91,
+        98,
+        165,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        2
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        82,
+        85,
+        174,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        3
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        95,
+        27,
+        160,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        0
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        103,
+        82,
+        152,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        1
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        92,
+        95,
+        164,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        2
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        76,
+        83,
+        179,
+        231
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        3
+      ],
+      "frame_file": null,
+      "alpha_bbox": [
+        103,
+        61,
+        152,
+        231
+      ],
+      "edge_touch": false
+    }
+  ],
+  "updated_at": "2026-07-07T20:55:00+08:00"
+}

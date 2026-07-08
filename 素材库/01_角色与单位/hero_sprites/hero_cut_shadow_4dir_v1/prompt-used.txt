@@ -1,1 +1,0 @@
-﻿4x4 topdown cut-shadow body action; rows down,left,right,up; columns ready,wind-up,snip,recover; lantern held close, scissors close; solid #FF00FF; no grid; no detached FX.

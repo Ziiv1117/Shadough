@@ -1,0 +1,1 @@
+4x4 runtime sheet. Rows: down, left, right, up. Columns: subtle glowing idle loop for placed lantern. Standalone long lantern prop only, stable bottom anchor, same scale, magenta background.

@@ -13,6 +13,8 @@ public class PastedShadowObject : MonoBehaviour
     [SerializeField] private bool canUnlock;
     [SerializeField] private bool canAttractEnemy;
     [SerializeField] private bool canBlock;
+    [SerializeField] private bool recallBlocked;
+    [SerializeField] private string recallBlockedMessage = "This shadow cannot be recalled now.";
 
     [Header("Legacy")]
     [Tooltip("Legacy compatibility only. New logic should prefer CanPress / CanUnlock / CanAttractEnemy / CanBlock.")]
@@ -28,6 +30,10 @@ public class PastedShadowObject : MonoBehaviour
     public bool CanAttractEnemy => canAttractEnemy;
     public bool CanBlock => canBlock;
     public bool CanTriggerMechanism => canTriggerMechanism;
+    public bool RecallBlocked => recallBlocked || (sourceData != null && sourceData.recallBlocked);
+    public string RecallBlockedMessage => !string.IsNullOrEmpty(recallBlockedMessage)
+        ? recallBlockedMessage
+        : "This shadow cannot be recalled now.";
 
     private void Reset()
     {
@@ -51,6 +57,10 @@ public class PastedShadowObject : MonoBehaviour
         canAttractEnemy = data.canAttractEnemy;
         canBlock = data.canBlock;
         canTriggerMechanism = data.canTriggerMechanism || data.canPress;
+        recallBlocked = data.recallBlocked;
+        recallBlockedMessage = string.IsNullOrEmpty(data.recallBlockedMessage)
+            ? "This shadow cannot be recalled now."
+            : data.recallBlockedMessage;
 
         if (spriteRenderer != null)
         {
@@ -80,6 +90,20 @@ public class PastedShadowObject : MonoBehaviour
         else
         {
             shapeCollider.isTrigger = !canStandOn;
+        }
+    }
+
+    public void BlockRecall(string message)
+    {
+        recallBlocked = true;
+        recallBlockedMessage = string.IsNullOrEmpty(message)
+            ? "This shadow cannot be recalled now."
+            : message;
+
+        if (sourceData != null)
+        {
+            sourceData.recallBlocked = true;
+            sourceData.recallBlockedMessage = recallBlockedMessage;
         }
     }
 
@@ -127,7 +151,11 @@ public class PastedShadowObject : MonoBehaviour
             canUnlock = canUnlock,
             canAttractEnemy = canAttractEnemy,
             canBlock = canBlock,
-            canTriggerMechanism = canTriggerMechanism || canPress
+            canTriggerMechanism = canTriggerMechanism || canPress,
+            sourceInteractable = sourceData != null ? sourceData.sourceInteractable : null,
+            returnsToPlayer = sourceData != null && sourceData.returnsToPlayer,
+            recallBlocked = RecallBlocked,
+            recallBlockedMessage = RecallBlockedMessage
         };
     }
 

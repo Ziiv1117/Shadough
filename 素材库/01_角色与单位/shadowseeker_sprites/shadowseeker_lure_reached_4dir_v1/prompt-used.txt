@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker lure-reached state. Rows down/left/right/up; columns stop, sniff, entranced, immobilized settle. No separate lure object.

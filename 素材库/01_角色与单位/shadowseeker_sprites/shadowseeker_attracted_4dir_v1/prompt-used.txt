@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker attracted-by-shadow state. Rows down/left/right/up; columns head lowers, eyes track, paw reaches, entranced lean. No separate lure object.

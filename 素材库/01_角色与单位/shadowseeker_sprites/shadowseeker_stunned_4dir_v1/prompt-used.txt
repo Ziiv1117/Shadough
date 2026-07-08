@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker stunned loop. Rows down/left/right/up; columns slump, head tilt, dim eyes, wobble. Tiny attached paper-fray marks allowed.

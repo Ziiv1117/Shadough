@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker alert state. Rows down/left/right/up; columns crouch, head snap, eyes flare, ready lean. Contained tiny alert marks only.

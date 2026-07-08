@@ -1,0 +1,1 @@
+4x4 runtime sheet. Rows: down, left, right, up. Columns synchronize with hero_place_lantern_4dir_v1: held high, lowering, near ground, placed upright. Lantern prop only, no hero.

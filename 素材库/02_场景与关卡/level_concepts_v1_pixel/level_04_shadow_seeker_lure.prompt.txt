@@ -1,7 +1,0 @@
-Create ONE standalone Level 04 map concept for Shadough in simple retro pixel art, WIDE LANDSCAPE 16:9 CANVAS, not square. Use a chunky 16-bit tilemap look, top-down / slight 3/4 view, limited palette, sparse details, dark green Unity-style grid background. Keep it more pixelated and less detailed than the earlier ornate maps.
-
-Level 04: Shadow Seeker lure puzzle. Design a narrow interior tower corridor / courtyard section with a main passage from lower-left to upper-right, blocked by a dangerous patrol zone. Include one very simple dark shadow-beast placeholder silhouette in the patrol area, small and blocky, only as a map concept marker, not a detailed enemy sprite. Add a side alcove / small shadow shrine away from the main path where the player can paste their own shadow as bait. Use dark floor stains, paw-like shadow marks, broken lantern, and simple walls to show the danger zone.
-
-Gameplay readability: entrance lower-left, main exit upper-right, narrow throat in middle watched by the shadow seeker, side lure alcove off to one side. The layout should imply: paste player shadow in side alcove, seeker moves away, player passes through main corridor. Keep it simple and pixelated.
-
-No UI, no labels, no arrows, no text, no callouts, no player character, no NPCs. Use only simple map elements: stone floor, low walls, alcove, broken lantern, dark marks, one small black shadow-seeker placeholder. Wide 16:9 composition with lots of dark green grid around the level.

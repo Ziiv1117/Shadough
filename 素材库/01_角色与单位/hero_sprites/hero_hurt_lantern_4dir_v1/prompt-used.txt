@@ -1,0 +1,1 @@
+Held-lantern hurt/fail body sheet. Image-gen raw art, custom split for irregular raw sheet. Lantern must remain visible; recoil column patched from same-row held-lantern recovery frames where generation omitted the lantern.

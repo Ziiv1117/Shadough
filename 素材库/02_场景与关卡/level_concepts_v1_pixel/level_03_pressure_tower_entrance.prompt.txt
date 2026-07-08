@@ -1,5 +1,0 @@
-Create ONE standalone Level 03 map concept for Shadough in simple retro pixel art: chunky 16-bit pixel tiles, low detail, top-down / slight 3/4 view, dark green Unity-style grid background, clean readable tilemap shape.
-
-Level 03: Entering the tower, pressure plate mechanism. The scene is the base entrance of an old Chinese bell tower / lantern tower inside the府邸. A closed tower door blocks the path at the upper side. A square pressure plate sits clearly BEFORE the closed door, on the floor. Nearby, a simple wooden beam frame or hanging beam casts a chunky rectangular dark shadow onto the floor. The design should imply the player cuts a CanPress beam shadow and pastes it onto the pressure plate to open the door.
-
-Keep only core level pieces: rectangular stone courtyard, tower base doorway, pressure plate, beam shadow source, rectangular beam shadow, two lantern stands, simple stairs or threshold. No characters, no enemies, no UI, no labels, no arrows, no text. More pixelated and less detailed, sparse, readable, not ornate.

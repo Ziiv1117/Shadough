@@ -1,7 +1,0 @@
-Generate ONE Shadough Level 02 concept map only. Style: very low-resolution toy-like retro pixel art, chunky coarse pixels, blocky toy diorama, simple 16-bit tiles, limited 24-color palette, big shapes, no fine texture, no realistic lighting, no ornate detail. Top-down / slight 3/4 view, wide 16:9 composition, dark green Unity planning grid background around the map.
-
-Level 02 content must match the name: KEY SHADOW PUZZLE INSIDE THE MANSION. No river, no tree shadow crossing, no pressure plate, no tower, no shadow beast, no enemy.
-
-Map layout: a small simple inner府邸 courtyard after the entrance. Lower-left entrance, upper-right exit blocked by one closed wooden gate with a big bronze lock. Before the locked gate, place one simple wall ornament or hanging key-shaped token that casts one clear dark key-shaped shadow on the floor near the lock area. The key shape must read as a flat shadow, not a pickup item. Use a few chunky wall blocks, a simple stone floor, maybe two toy-like lantern blocks.
-
-Keep it extremely simple and readable: courtyard floor, low walls, closed locked gate, key-shadow source, key-shaped shadow. No characters, no player, no enemies, no NPCs, no UI, no labels, no arrows, no text, no callouts.

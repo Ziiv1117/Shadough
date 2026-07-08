@@ -103,7 +103,10 @@ public class PlayerSelfShadowCutter : MonoBehaviour
             canUnlock = false,
             canAttractEnemy = true,
             canBlock = false,
-            canTriggerMechanism = false
+            canTriggerMechanism = false,
+            sourceInteractable = null,
+            returnsToPlayer = true,
+            recallBlocked = false
         };
     }
 

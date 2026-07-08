@@ -23,8 +23,35 @@ public class ShadowItemData
     // Legacy compatibility. New logic should prefer canPress / canUnlock / canAttractEnemy / canBlock.
     public bool canTriggerMechanism;
 
+    [Header("Recall Source")]
+    public ShadowInteractable sourceInteractable;
+    public bool returnsToPlayer;
+    public bool recallBlocked;
+    public string recallBlockedMessage = "This shadow cannot be recalled now.";
+
     public bool IsValid()
     {
         return shadowType != ShadowType.None;
+    }
+
+    public bool HasRecallSource()
+    {
+        return returnsToPlayer || sourceInteractable != null;
+    }
+
+    public bool TryRestoreSource()
+    {
+        if (returnsToPlayer)
+        {
+            return true;
+        }
+
+        if (sourceInteractable == null)
+        {
+            return false;
+        }
+
+        sourceInteractable.Restore();
+        return true;
     }
 }

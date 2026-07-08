@@ -114,7 +114,13 @@ public class FreeShadowPlacer : MonoBehaviour
         }
 
         RemoveExistingPlayerShadowIfNeeded(shadowData);
-        CreatePastedShadowObject(shadowData, currentPreviewPosition, currentPreviewRotation);
+        PastedShadowObject pastedShadow = CreatePastedShadowObject(shadowData, currentPreviewPosition, currentPreviewRotation);
+        ShadowRecallController recallController = GetComponent<ShadowRecallController>();
+        if (recallController != null)
+        {
+            recallController.RegisterPastedShadow(pastedShadow);
+        }
+
         Debug.Log("Placed free shadow: " + shadowData.shadowType + " at " + currentPreviewPosition);
     }
 
@@ -136,7 +142,7 @@ public class FreeShadowPlacer : MonoBehaviour
         }
     }
 
-    private void CreatePastedShadowObject(ShadowItemData data, Vector3 position, Quaternion rotation)
+    private PastedShadowObject CreatePastedShadowObject(ShadowItemData data, Vector3 position, Quaternion rotation)
     {
         Transform parent = ResolveEffectParent();
         GameObject pastedObject = new GameObject("PastedShadowObject_" + data.shadowType);
@@ -158,6 +164,7 @@ public class FreeShadowPlacer : MonoBehaviour
 
         PastedShadowObject pastedShadow = pastedObject.AddComponent<PastedShadowObject>();
         pastedShadow.Initialize(data);
+        return pastedShadow;
     }
 
     private void ApplyRendererShape(SpriteRenderer renderer, ShadowItemData data)

@@ -1,0 +1,1 @@
+﻿Exaggerated no-lantern hurt/fail body sheet v5. Raw 4x4 top-down pixel-art sheet: rows down/left/right/up; columns neutral, impact flinch, strong recoil/stagger, recovery. No lantern/pole/glow. Exactly one scissors in right hand. Strong pose change: lean, squash, raised arm, hair/ribbon swing, boot shift. Large margins, same scale, contained.

@@ -1,0 +1,91 @@
+{
+  "asset_set": "level_scenes_v6_gate_path_ready",
+  "type": "five corrected level concept maps",
+  "source_method": "built-in image generation edits from approved v4/v2plus room maps, then local 960x540 pixel-style normalization",
+  "current_logic": [
+    "level1: outside mansion, cross river, then pass gate toward level2",
+    "level2: key-lock room; after locked mechanism gate, road leads to level3",
+    "level3: press-plate room reached behind the locked gate; no long connector road inside this room",
+    "level4: lure corridor, false roofed gatehouses removed",
+    "level5: final clock-core room, roofed gatehouse removed and replaced with open approach"
+  ],
+  "items": [
+    {
+      "id": "level_01_outside_river",
+      "generated_source": "C:\\Users\\15963\\.codex\\generated_images\\019f36d0-c166-7e23-a487-e7745efcfa50\\ig_0324f5cf5f7137b5016a4d15d23cec8196b00b3424a8fdc35a.png",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "output_file": "level_01_outside_river_path_ready.png",
+      "output_size": [
+        960,
+        540
+      ],
+      "label": "1. level1: river gate -> road after gate",
+      "notes": "???????????????? level2 ????"
+    },
+    {
+      "id": "level_02_mansion_key_lock",
+      "generated_source": "C:\\Users\\15963\\.codex\\generated_images\\019f36d0-c166-7e23-a487-e7745efcfa50\\ig_061c5cd8a1e28df4016a4d165bc7d88196bc931ebcfdc019f8.png",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "output_file": "level_02_mansion_key_lock_path_ready.png",
+      "output_size": [
+        960,
+        540
+      ],
+      "label": "2. level2: key lock room -> road behind lock",
+      "notes": "??????????????? level3 ????"
+    },
+    {
+      "id": "level_03_press_plate_after_lock",
+      "generated_source": "C:\\Users\\15963\\.codex\\generated_images\\019f36d0-c166-7e23-a487-e7745efcfa50\\ig_049912b1d812353b016a4d1892edc48197a7340d0125cab950.png",
+      "source_size": [
+        1542,
+        1020
+      ],
+      "output_file": "level_03_press_plate_after_locked_gate_ready.png",
+      "output_size": [
+        960,
+        540
+      ],
+      "label": "3. level3: press plate room, no long road",
+      "notes": "???????? level3 ???????? level2 ???????????"
+    },
+    {
+      "id": "level_04_lure_corridor",
+      "generated_source": "C:\\Users\\15963\\.codex\\generated_images\\019f36d0-c166-7e23-a487-e7745efcfa50\\ig_04569c37dc5286b4016a4d16ee21048190bf61553cabe0239e.png",
+      "source_size": [
+        1672,
+        941
+      ],
+      "output_file": "level_04_lure_corridor_no_false_gates_ready.png",
+      "output_size": [
+        960,
+        540
+      ],
+      "label": "4. level4: lure corridor, no false gatehouses",
+      "notes": "??????????????????????"
+    },
+    {
+      "id": "level_05_final_clock_core",
+      "generated_source": "C:\\Users\\15963\\.codex\\generated_images\\019f36d0-c166-7e23-a487-e7745efcfa50\\ig_049912b1d812353b016a4d18e6ba8481978eebd7f9222708ea.png",
+      "source_size": [
+        1448,
+        1086
+      ],
+      "output_file": "level_05_final_clock_core_open_approach_ready.png",
+      "output_size": [
+        960,
+        540
+      ],
+      "label": "5. level5: final chamber, open approach",
+      "notes": "??????????????????????"
+    }
+  ],
+  "contact_sheet": "v6_gate_path_ready_contact_sheet.png",
+  "not_runtime": true
+}

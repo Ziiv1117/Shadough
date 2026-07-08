@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker chase movement. Rows down/left/right/up; columns launch, claws forward, low glide, rear kick. Compact fast movement.

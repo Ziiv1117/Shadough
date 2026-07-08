@@ -118,7 +118,10 @@ public class ShadowInteractable : MonoBehaviour
             canUnlock = canUnlock,
             canAttractEnemy = canAttractEnemy,
             canBlock = canBlock,
-            canTriggerMechanism = canTriggerMechanism || canPress
+            canTriggerMechanism = canTriggerMechanism || canPress,
+            sourceInteractable = this,
+            returnsToPlayer = false,
+            recallBlocked = false
         };
     }
 

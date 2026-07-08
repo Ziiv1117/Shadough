@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker hurt reaction. Rows down/left/right/up; columns flinch, squash/recoil, eyes flicker, recovery. No wide hit effect.

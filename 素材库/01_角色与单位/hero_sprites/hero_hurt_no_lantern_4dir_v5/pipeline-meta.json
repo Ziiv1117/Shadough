@@ -1,0 +1,545 @@
+{
+  "processor": "custom-band-split-for-liked-irregular-raw-sheet",
+  "input": "C:\\Users\\15963\\Desktop\\Shadough\\素材库\\01_角色与单位\\hero_sprites\\hero_hurt_no_lantern_4dir_v5\\raw-sheet.png",
+  "rows": 4,
+  "cols": 4,
+  "cell_size": 256,
+  "background_distance_threshold": 80,
+  "row_bands": [
+    [
+      102,
+      322
+    ],
+    [
+      402,
+      619
+    ],
+    [
+      692,
+      905
+    ],
+    [
+      979,
+      1188
+    ]
+  ],
+  "col_bands": [
+    [
+      113,
+      257
+    ],
+    [
+      381,
+      557
+    ],
+    [
+      671,
+      883
+    ],
+    [
+      1010,
+      1153
+    ]
+  ],
+  "row_bounds": [
+    0,
+    361,
+    654,
+    941,
+    1254
+  ],
+  "col_bounds": [
+    0,
+    327,
+    623,
+    929,
+    1254
+  ],
+  "fit_scale": 0.9,
+  "common_scale": 0.9404081632653062,
+  "frame_labels": [
+    "hero_hurt_no_lantern-1",
+    "hero_hurt_no_lantern-2",
+    "hero_hurt_no_lantern-3",
+    "hero_hurt_no_lantern-4",
+    "hero_hurt_no_lantern-5",
+    "hero_hurt_no_lantern-6",
+    "hero_hurt_no_lantern-7",
+    "hero_hurt_no_lantern-8",
+    "hero_hurt_no_lantern-9",
+    "hero_hurt_no_lantern-10",
+    "hero_hurt_no_lantern-11",
+    "hero_hurt_no_lantern-12",
+    "hero_hurt_no_lantern-13",
+    "hero_hurt_no_lantern-14",
+    "hero_hurt_no_lantern-15",
+    "hero_hurt_no_lantern-16"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_window": [
+        0,
+        0,
+        327,
+        361
+      ],
+      "crop_bbox": [
+        100,
+        90,
+        280,
+        335
+      ],
+      "source_size": [
+        180,
+        245
+      ],
+      "output_bbox": [
+        52,
+        23,
+        203,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_window": [
+        327,
+        0,
+        623,
+        361
+      ],
+      "crop_bbox": [
+        371,
+        90,
+        577,
+        335
+      ],
+      "source_size": [
+        206,
+        245
+      ],
+      "output_bbox": [
+        40,
+        23,
+        215,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        2
+      ],
+      "source_window": [
+        623,
+        0,
+        929,
+        361
+      ],
+      "crop_bbox": [
+        671,
+        94,
+        897,
+        333
+      ],
+      "source_size": [
+        226,
+        239
+      ],
+      "output_bbox": [
+        31,
+        29,
+        225,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        3
+      ],
+      "source_window": [
+        929,
+        0,
+        1254,
+        361
+      ],
+      "crop_bbox": [
+        998,
+        96,
+        1176,
+        335
+      ],
+      "source_size": [
+        178,
+        239
+      ],
+      "output_bbox": [
+        53,
+        29,
+        202,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_window": [
+        0,
+        361,
+        327,
+        654
+      ],
+      "crop_bbox": [
+        113,
+        390,
+        260,
+        629
+      ],
+      "source_size": [
+        147,
+        239
+      ],
+      "output_bbox": [
+        68,
+        29,
+        188,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_window": [
+        327,
+        361,
+        623,
+        654
+      ],
+      "crop_bbox": [
+        377,
+        394,
+        557,
+        627
+      ],
+      "source_size": [
+        180,
+        233
+      ],
+      "output_bbox": [
+        52,
+        34,
+        203,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        2
+      ],
+      "source_window": [
+        623,
+        361,
+        929,
+        654
+      ],
+      "crop_bbox": [
+        666,
+        400,
+        884,
+        634
+      ],
+      "source_size": [
+        218,
+        234
+      ],
+      "output_bbox": [
+        34,
+        33,
+        221,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        3
+      ],
+      "source_window": [
+        929,
+        361,
+        1254,
+        654
+      ],
+      "crop_bbox": [
+        1004,
+        394,
+        1152,
+        629
+      ],
+      "source_size": [
+        148,
+        235
+      ],
+      "output_bbox": [
+        67,
+        33,
+        188,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        0
+      ],
+      "source_window": [
+        0,
+        654,
+        327,
+        941
+      ],
+      "crop_bbox": [
+        116,
+        680,
+        257,
+        918
+      ],
+      "source_size": [
+        141,
+        238
+      ],
+      "output_bbox": [
+        71,
+        30,
+        185,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        1
+      ],
+      "source_window": [
+        327,
+        654,
+        623,
+        941
+      ],
+      "crop_bbox": [
+        388,
+        689,
+        563,
+        916
+      ],
+      "source_size": [
+        175,
+        227
+      ],
+      "output_bbox": [
+        55,
+        40,
+        201,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        2
+      ],
+      "source_window": [
+        623,
+        654,
+        929,
+        941
+      ],
+      "crop_bbox": [
+        666,
+        694,
+        882,
+        916
+      ],
+      "source_size": [
+        216,
+        222
+      ],
+      "output_bbox": [
+        35,
+        45,
+        220,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        3
+      ],
+      "source_window": [
+        929,
+        654,
+        1254,
+        941
+      ],
+      "crop_bbox": [
+        1005,
+        686,
+        1144,
+        918
+      ],
+      "source_size": [
+        139,
+        232
+      ],
+      "output_bbox": [
+        72,
+        35,
+        184,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        0
+      ],
+      "source_window": [
+        0,
+        941,
+        327,
+        1254
+      ],
+      "crop_bbox": [
+        102,
+        967,
+        258,
+        1201
+      ],
+      "source_size": [
+        156,
+        234
+      ],
+      "output_bbox": [
+        64,
+        33,
+        192,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        1
+      ],
+      "source_window": [
+        327,
+        941,
+        623,
+        1254
+      ],
+      "crop_bbox": [
+        362,
+        967,
+        559,
+        1201
+      ],
+      "source_size": [
+        197,
+        234
+      ],
+      "output_bbox": [
+        44,
+        33,
+        211,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        2
+      ],
+      "source_window": [
+        623,
+        941,
+        929,
+        1254
+      ],
+      "crop_bbox": [
+        656,
+        972,
+        873,
+        1189
+      ],
+      "source_size": [
+        217,
+        217
+      ],
+      "output_bbox": [
+        35,
+        49,
+        221,
+        235
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        3
+      ],
+      "source_window": [
+        929,
+        941,
+        1254,
+        1254
+      ],
+      "crop_bbox": [
+        992,
+        967,
+        1149,
+        1201
+      ],
+      "source_size": [
+        157,
+        234
+      ],
+      "output_bbox": [
+        63,
+        33,
+        192,
+        235
+      ],
+      "edge_touch": false
+    }
+  ],
+  "edge_touch_frames": []
+}

@@ -1,0 +1,28 @@
+{
+  "batch": "p0_scene_environment_modules",
+  "style_reference": "level_scenes_v4_v2plus_interactive_ready/v4_contact_sheet.png",
+  "generated_assets": [
+    "environment_tiles/stone_path_tile.png",
+    "environment_tiles/blue_brick_floor_tile.png",
+    "environment_tiles/water_channel_tile.png",
+    "environment_tiles/water_bank_left.png",
+    "environment_tiles/water_bank_right.png",
+    "environment_tiles/broken_bridge_edge.png",
+    "environment_walls/timber_wall.png",
+    "environment_props/ancient_tree_trunk.png",
+    "environment_props/ancient_tree_canopy.png",
+    "environment_props/timber_beam_source.png",
+    "environment_props/key_ornament_source.png"
+  ],
+  "source_sheets": [
+    "environment_tiles/p0_environment_tiles_source_atlas.png",
+    "environment_walls/timber_wall_source_chroma.png",
+    "environment_props/p0_props_source_chroma_sheet.png"
+  ],
+  "preview": "p0_scene_assets_contact_sheet.png",
+  "notes": [
+    "P0 only: core reusable scene tiles, water edges, wall segment, and shadow-source props.",
+    "Transparent props/walls use alpha generated from chroma-key source sheets.",
+    "These are art-library assets, not Unity prefabs or gameplay logic."
+  ]
+}

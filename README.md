@@ -8,6 +8,12 @@ The current playable target is the top-down graybox scene:
 
 The player cuts shadows from the world, keeps their original silhouette shape, and pastes them back into the level. Mechanisms respond to pasted shadow properties and collider contact, not to hard-coded shadow source types.
 
+## Game Type
+
+The current project type is a 2D top-down Chinese pixel shadow-puppet puzzle game prototype.
+
+It is closest to a light-action environmental puzzle game: the player reads light and shadow, cuts a shadow, carries it, and pastes it back into the scene to solve spatial mechanisms. The current Unity scene is still a graybox gameplay proof; the locked production direction is Chinese pixel art with paper-cut, lantern, shadow-puppet, old-town, and clock-core motifs.
+
 ## Environment And Reproduction
 
 This repo is a Unity project. Open the Unity project folder at `ShadoughUnity`, not the repository root.
@@ -91,7 +97,7 @@ Keep these in the repo:
 - `ShadoughUnity/Packages/manifest.json`
 - `ShadoughUnity/Packages/packages-lock.json`
 - `ShadoughUnity/ProjectSettings`
-- Root planning and asset docs such as `策划.md`, `VERSION_NOTES.md`, and `素材库/完整素材清单.md`
+- Root planning and asset docs such as `策划.md`, `VERSION_NOTES.md`, `素材库/完整素材清单.md`, and `素材库/*/素材清单.md`
 
 Do not commit Unity-generated local folders:
 
@@ -204,6 +210,15 @@ An inactive-object audit found 16 inactive scene objects in `ClockTower_TopdownP
 
 Those inactive objects are old visual, test, decorative, or path-guide objects. They are candidates for a future archive pass, preferably under `Assets/_Shadough/_Archive/TopdownUnusedSceneObjects/`, instead of immediate deletion.
 
+## Asset Library Layout
+
+The asset library uses a two-level documentation structure:
+
+- `素材库/完整素材清单.md` is the root production index for the whole game.
+- Each category folder owns its own `素材清单.md`, explaining what belongs in that folder, what each asset is used for, and where it should be imported in Unity.
+- `素材库/02_场景与关卡` is currently organized as `00_当前总览`, `01_房间效果图`, `02_环境拆分素材`, `03_灰盒对照`, and `04_文档与提示词`.
+- Player-shadow concept reference belongs in `素材库/01_角色与单位`; player-shadow runtime/mechanic assets belong in `素材库/03_影子系统`.
+
 ## Project Structure
 
 - `ShadoughUnity/Assets/_Shadough/Scenes`
@@ -214,11 +229,23 @@ Those inactive objects are old visual, test, decorative, or path-guide objects. 
 - `ShadoughUnity/Assets/_Shadough/Scripts/Topdown`
 - `ShadoughUnity/Assets/_Shadough/Scripts/UI`
 - `ShadoughUnity/Assets/_Shadough/_Archive/SideScroller`
+- `素材库/完整素材清单.md`
+- `素材库/01_角色与单位/素材清单.md`
+- `素材库/02_场景与关卡/素材清单.md`
+- `素材库/03_影子系统/素材清单.md`
+- `素材库/04_光源与光影/素材清单.md`
+- `素材库/05_机关与交互/素材清单.md`
+- `素材库/06_UI图标与字体/素材清单.md`
+- `素材库/07_特效与动画/素材清单.md`
+- `素材库/08_音频/素材清单.md`
+- `素材库/09_参考与说明/素材清单.md`
 
 ## Supporting Docs
 
 - `策划.md`: full Chinese design document
 - `VERSION_NOTES.md`: root-level version summary
+- `素材库/完整素材清单.md`: root asset index for all required game assets and their category folders
+- `素材库/*/素材清单.md`: per-folder asset plan for what belongs in each asset category
 - `ShadoughUnity/Assets/_Shadough/VERSION_NOTES.md`: Unity project-local version notes
 - `ShadoughUnity/Assets/_Shadough/TOPDOWN_PROTOTYPE_CHECKLIST.md`: top-down prototype checklist
 
@@ -226,7 +253,7 @@ Those inactive objects are old visual, test, decorative, or path-guide objects. 
 
 - Archive unused inactive top-down scene objects if they are no longer needed for iteration history
 - Convert top-down visual readability toward the Chinese pixel-art direction
-- Refresh `素材库/完整素材清单.md` and use it as the production index for Chinese pixel-art replacement
+- Maintain `素材库/完整素材清单.md` as the root production index, then record each asset in the matching `素材库/*/素材清单.md` before importing it into Unity
 - Replace graybox landmarks with readable Chinese pixel-art tiles, props, lanterns, shadow-puppet silhouettes, UI, VFX, and audio
 - Add shadow dissipation system
 - Add strong-light shadow destruction

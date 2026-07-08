@@ -1,5 +1,26 @@
 # Version Notes
 
+## Asset Documentation Structure Refresh
+
+Date: 2026-07-08
+
+Status: documentation-only update; no gameplay, scene, or script change in this note.
+
+## Completed
+
+- `素材库/完整素材清单.md` is the root production index for all required game assets.
+- Each active asset category folder owns a local `素材清单.md`.
+- `素材库/02_场景与关卡` now uses the current numbered structure:
+  `00_当前总览`, `01_房间效果图`, `02_环境拆分素材`, `03_灰盒对照`, `04_文档与提示词`.
+- Player-shadow concept reference is assigned to `素材库/01_角色与单位`; player-shadow runtime, pasted, lure, icon, and collision-rule assets are assigned to `素材库/03_影子系统`.
+- README and planning docs now describe the game type, asset-library workflow, and documentation entry points.
+
+## Not Changed
+
+- The playable loop remains:
+  `Lantern -> TreeShadow crossing -> CanPress plate -> CanUnlock lock -> PlayerShadow lure -> FinalClockCore`.
+- Unity scene files, scripts, prefabs, and inspector settings were not changed by this documentation update.
+
 ## Art Direction Update: Chinese Pixel Shadow Style
 
 Date: 2026-07-06

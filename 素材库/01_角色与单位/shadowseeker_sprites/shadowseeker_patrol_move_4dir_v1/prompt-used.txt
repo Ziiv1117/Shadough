@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker patrol movement. Rows down/left/right/up; columns cautious crawl cycle. Small centered sprites with folded tail and safe padding.

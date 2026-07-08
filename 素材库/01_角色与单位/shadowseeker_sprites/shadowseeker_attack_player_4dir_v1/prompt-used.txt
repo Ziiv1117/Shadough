@@ -1,0 +1,1 @@
+ShadowSeeker attack-player 4-direction 4x4 sprite sheet. Rows: down, left, right, up. Frames per row: wind-up, lunge claw strike, compact attached claw sparks, recovery. Preserve existing black paper-shadow creature identity, gold mask eyes, red stitches, orange-gold pixel outlines. Flat #FF00FF background, same scale, generous padding, no player target drawn.

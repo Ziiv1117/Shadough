@@ -1,1 +1,0 @@
-﻿4x4 topdown paste-shadow body action; rows down,left,right,up; columns ready,reach,paste,recover; no pasted shadow object included; solid #FF00FF; no grid; no detached FX.

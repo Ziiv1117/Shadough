@@ -1,0 +1,232 @@
+{
+  "target": "creature",
+  "mode": "patrol_move",
+  "input": "raw-sheet.png",
+  "rows": 4,
+  "cols": 4,
+  "cell_size": 256,
+  "sheet_size": [
+    1024,
+    1024
+  ],
+  "direction_order": [
+    "down/front",
+    "left",
+    "right",
+    "up/back"
+  ],
+  "frame_count": 16,
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "alpha_bbox": [
+        29,
+        51,
+        227,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "alpha_bbox": [
+        28,
+        48,
+        227,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        2
+      ],
+      "alpha_bbox": [
+        17,
+        82,
+        238,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        0,
+        3
+      ],
+      "alpha_bbox": [
+        26,
+        44,
+        230,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "alpha_bbox": [
+        10,
+        66,
+        245,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "alpha_bbox": [
+        20,
+        63,
+        236,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        2
+      ],
+      "alpha_bbox": [
+        13,
+        99,
+        243,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        1,
+        3
+      ],
+      "alpha_bbox": [
+        13,
+        64,
+        242,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        0
+      ],
+      "alpha_bbox": [
+        11,
+        59,
+        244,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        1
+      ],
+      "alpha_bbox": [
+        14,
+        64,
+        242,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        2
+      ],
+      "alpha_bbox": [
+        15,
+        95,
+        241,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        2,
+        3
+      ],
+      "alpha_bbox": [
+        10,
+        59,
+        245,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        0
+      ],
+      "alpha_bbox": [
+        39,
+        38,
+        217,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        1
+      ],
+      "alpha_bbox": [
+        41,
+        48,
+        215,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        2
+      ],
+      "alpha_bbox": [
+        35,
+        72,
+        220,
+        246
+      ],
+      "edge_touch": false
+    },
+    {
+      "grid": [
+        3,
+        3
+      ],
+      "alpha_bbox": [
+        43,
+        46,
+        212,
+        246
+      ],
+      "edge_touch": false
+    }
+  ],
+  "edge_touch_frames": [],
+  "qc_note": "Final alpha sheet checked after generate2dsprite processing. Some source-grid checks are conservative for wide creature silhouettes; final alpha bboxes are the import QC source of truth.",
+  "updated_at": "2026-07-07T22:46:00+08:00"
+}

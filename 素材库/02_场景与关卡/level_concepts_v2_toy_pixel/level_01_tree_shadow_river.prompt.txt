@@ -1,7 +1,0 @@
-Generate ONE Shadough Level 01 concept map only. Style: very low-resolution toy-like retro pixel art, chunky coarse pixels, blocky toy diorama, simple 16-bit tiles, limited 24-color palette, big shapes, no fine texture, no realistic lighting, no ornate detail. Top-down / slight 3/4 view, wide 16:9 composition, dark green Unity planning grid background around the map.
-
-Level 01 content must match the name: TREE SHADOW RIVER CROSSING OUTSIDE THE MANSION. The scene is outside the府邸 before entering it. No courtyard walls, no closed lock gate, no pressure plate, no tower, no shadow beast, no enemy, no indoor room.
-
-Map layout: lower-left dirt/stone approach path, a simple blue river crossing in the middle, far bank leads to a small distant府邸 outer gate at upper-right. The river fully blocks the route. No bridge, no complete walkway, no bypass. Show two separated chunky stone banks and a few broken posts. Put one large toy-like old tree on the near bank. The tree casts one long dark blocky tree-shaped shadow across the water toward the far bank. The shadow must look like a flat paper/ink shadow, not a physical bridge.
-
-Keep it very simple and readable: path, river, broken banks, tree, tree shadow, distant gate. No characters, no player, no enemies, no NPCs, no UI, no labels, no arrows, no text, no callouts.

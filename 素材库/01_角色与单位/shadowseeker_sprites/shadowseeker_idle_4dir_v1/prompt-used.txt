@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker idle loop. Rows down/left/right/up; columns neutral, breathing, eyes/ears twitch, return. Small centered sprites with large magenta padding.

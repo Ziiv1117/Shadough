@@ -1,0 +1,17 @@
+{
+  "target": "creature",
+  "mode": "turnaround_reference",
+  "input": "raw-sheet.png",
+  "outputs": [
+    "turnaround-transparent.png"
+  ],
+  "raw_size": [
+    2172,
+    724
+  ],
+  "background_removed": true,
+  "key_color": "auto border",
+  "transparent_pixels": 1155971,
+  "partial_alpha_pixels": 11151,
+  "updated_at": "2026-07-07T22:46:00+08:00"
+}

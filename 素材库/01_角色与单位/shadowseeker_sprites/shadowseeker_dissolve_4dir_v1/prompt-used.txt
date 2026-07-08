@@ -1,0 +1,1 @@
+Corrected 4x4 ShadowSeeker dissolve/death animation. Rows down/left/right/up; columns intact, fray, collapse, fading paper silhouette. Compact fragments only.

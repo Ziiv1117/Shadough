@@ -1,0 +1,1 @@
+﻿Use selected protagonist and held-lantern idle/walk as references. Raw 4x4 top-down pixel-art sheet: rows down/left/right/up; columns normal held-lantern, lift lantern, focused lean, settle. Body animation only for reveal view; no overlay, no light cone, no external VFX. Solid #FF00FF background, no text, no borders, stable feet anchor, same scale, contained.

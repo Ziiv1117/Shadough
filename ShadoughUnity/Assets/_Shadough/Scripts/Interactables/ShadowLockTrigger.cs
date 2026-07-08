@@ -93,6 +93,7 @@ public class ShadowLockTrigger : MonoBehaviour
             return;
         }
 
+        pastedShadow.BlockRecall("This shadow cannot be recalled after unlocking this door.");
         lockController.Unlock();
     }
 

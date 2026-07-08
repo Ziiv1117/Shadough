@@ -1,0 +1,1 @@
+﻿Deterministic reverse of hero_place_lantern_4dir_v1. Raw 4x4 top-down pixel-art sheet: rows down/left/right/up; columns released/no-lantern near placed lantern, reach down, lift lantern, holding lantern upright. Same source art, same scale, same feet anchor, solid #FF00FF background.
