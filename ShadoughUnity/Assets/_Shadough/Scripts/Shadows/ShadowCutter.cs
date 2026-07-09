@@ -229,6 +229,7 @@ public class ShadowCutter : MonoBehaviour
             return;
         }
 
+        PlayCutSound();
         ShowTemporaryPrompt("Cut " + type, 1.2f);
     }
 
@@ -250,7 +251,16 @@ public class ShadowCutter : MonoBehaviour
         ShadowType type = itemData.shadowType;
         Destroy(currentPastedTarget.gameObject);
         currentPastedTarget = null;
+        PlayCutSound();
         ShowTemporaryPrompt("Cut " + type, 1.2f);
+    }
+
+    private void PlayCutSound()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.cutShadow);
+        }
     }
 
     private void UpdatePromptText()

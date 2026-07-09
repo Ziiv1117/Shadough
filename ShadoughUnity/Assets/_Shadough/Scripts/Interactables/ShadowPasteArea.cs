@@ -120,6 +120,12 @@ public class ShadowPasteArea : MonoBehaviour
         }
 
         inventory.ConsumeShadow();
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.pasteShadow);
+        }
+
         Activate();
     }
 

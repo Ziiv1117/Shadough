@@ -143,6 +143,12 @@ public class PlayerLanternController : MonoBehaviour
         }
 
         ApplyVisualState();
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.lantern);
+        }
+
         Debug.Log("Lantern planted");
     }
 
