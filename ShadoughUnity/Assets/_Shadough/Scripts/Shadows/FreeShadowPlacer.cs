@@ -4,7 +4,7 @@
 public class FreeShadowPlacer : MonoBehaviour
 {
     [Header("Placement")]
-    [SerializeField] private float placementRadius = 2.5f;
+    [SerializeField] private float placementRadius = 1.05f;
     [SerializeField] private KeyCode pasteKey = KeyCode.F;
     [SerializeField] private Transform effectParent;
 

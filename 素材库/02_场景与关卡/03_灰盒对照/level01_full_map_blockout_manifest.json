@@ -1,0 +1,207 @@
+{
+  "version": 4,
+  "generated_at": "2026-07-09",
+  "source_map": "../05_????/level01_full_map.png",
+  "canvas": {
+    "width": 1448,
+    "height": 1086,
+    "origin": "top_left_pixels"
+  },
+  "precision": "opencv_pixel_level_border_connected_segmentation_no_hand_drawn_polygons",
+  "opencv_version": "5.0.0",
+  "outputs": {
+    "pixel_class_blockout": "level01_full_map_blockout.png",
+    "pixel_class_overlay": "level01_full_map_blockout_overlay.png",
+    "pixel_outline_overlay": "level01_full_map_pixel_outline_overlay.png",
+    "pixel_footprint_mask": "level01_full_map_pixel_footprint_mask.png",
+    "pixel_class_mask": "level01_full_map_pixel_class_mask.png",
+    "contact_sheet": "level01_full_map_blockout_contact_sheet.png"
+  },
+  "class_ids": {
+    "0": "background",
+    "1": "grass_walkable_candidate",
+    "2": "water_blocker",
+    "3": "stone_walkable_candidate",
+    "4": "solid_wall_prop_candidate",
+    "5": "teal_structure_candidate"
+  },
+  "class_colors_rgb": {
+    "grass_walkable": [
+      76,
+      146,
+      55
+    ],
+    "water_blocker": [
+      15,
+      93,
+      148
+    ],
+    "stone_walkable": [
+      137,
+      140,
+      134
+    ],
+    "solid_wall_prop": [
+      28,
+      31,
+      31
+    ],
+    "teal_structure": [
+      41,
+      105,
+      96
+    ]
+  },
+  "pixel_counts": {
+    "canvas_pixels": 1572528,
+    "background_pixels": 1307831,
+    "foreground_footprint_pixels": 264663,
+    "grass_walkable_pixels": 35605,
+    "water_blocker_pixels": 18653,
+    "stone_walkable_pixels": 129791,
+    "solid_wall_prop_pixels": 79998,
+    "teal_structure_pixels": 616
+  },
+  "opencv_pipeline": {
+    "background_method": "HSV green/cyan candidate + cv2.floodFill from image borders",
+    "foreground_method": "all non-border-connected pixels, connectedComponentsWithStats noise filter area >= 8 px",
+    "outline_method": "cv2.MORPH_GRADIENT on exact foreground mask, 3x3 kernel",
+    "classification_scope": "all class masks are constrained to the exact foreground footprint mask"
+  },
+  "component_summary": {
+    "component_count_after_noise_filter": 6,
+    "largest_components": [
+      {
+        "id": 1,
+        "bbox": [
+          54,
+          63,
+          1396,
+          980
+        ],
+        "area_pixels": 264171
+      },
+      {
+        "id": 3,
+        "bbox": [
+          201,
+          763,
+          221,
+          793
+        ],
+        "area_pixels": 336
+      },
+      {
+        "id": 4,
+        "bbox": [
+          185,
+          779,
+          196,
+          791
+        ],
+        "area_pixels": 104
+      },
+      {
+        "id": 17,
+        "bbox": [
+          417,
+          893,
+          421,
+          897
+        ],
+        "area_pixels": 18
+      },
+      {
+        "id": 21,
+        "bbox": [
+          318,
+          946,
+          322,
+          950
+        ],
+        "area_pixels": 18
+      },
+      {
+        "id": 6,
+        "bbox": [
+          163,
+          805,
+          168,
+          809
+        ],
+        "area_pixels": 16
+      }
+    ]
+  },
+  "scene_hooks": [
+    {
+      "id": "player_spawn",
+      "type": "spawn",
+      "position_px": [
+        162,
+        884
+      ]
+    },
+    {
+      "id": "tree_shadow_source",
+      "type": "interactable_source",
+      "position_px": [
+        127,
+        789
+      ]
+    },
+    {
+      "id": "outer_gate_transition",
+      "type": "gate_transition",
+      "position_px": [
+        405,
+        681
+      ]
+    },
+    {
+      "id": "key_lock_anchor",
+      "type": "lock",
+      "position_px": [
+        657,
+        552
+      ]
+    },
+    {
+      "id": "press_plate_anchor",
+      "type": "pressure_plate",
+      "position_px": [
+        697,
+        436
+      ]
+    },
+    {
+      "id": "lure_midpoint",
+      "type": "lure",
+      "position_px": [
+        988,
+        338
+      ]
+    },
+    {
+      "id": "final_clock_core",
+      "type": "final_core",
+      "position_px": [
+        1268,
+        158
+      ]
+    },
+    {
+      "id": "level_exit",
+      "type": "exit",
+      "position_px": [
+        1268,
+        158
+      ]
+    }
+  ],
+  "unity_import_notes": {
+    "purpose": "Pixel-level reference for rebuilding colliders, triggers, walkable areas, blockers, spawn, exits, and gameplay anchors against the current complete map. It is not a final art layer.",
+    "recommended_ppu_workflow": "Import final map, blockout, overlay, footprint mask, class mask, and outline overlay with the same Pixels Per Unit and pivot so pixels align exactly.",
+    "collision_note": "Use the footprint/class masks as source reference; simplify to PolygonCollider2D/CompositeCollider2D only after the 1px outline overlay visually matches the final map."
+  }
+}

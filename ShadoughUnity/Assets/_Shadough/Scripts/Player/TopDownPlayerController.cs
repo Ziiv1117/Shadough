@@ -5,8 +5,12 @@ public class TopDownPlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
 
+    [Header("Footstep Audio")]
+    [SerializeField] private float footstepInterval = 0.4f;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
+    private float footstepTimer;
 
     public float MoveSpeed => moveSpeed;
 
@@ -24,6 +28,8 @@ public class TopDownPlayerController : MonoBehaviour
         {
             moveInput.Normalize();
         }
+
+        HandleFootstep();
     }
 
     private void FixedUpdate()
@@ -31,8 +37,31 @@ public class TopDownPlayerController : MonoBehaviour
         rb.MovePosition(rb.position + moveInput * moveSpeed * Time.fixedDeltaTime);
     }
 
+    private void HandleFootstep()
+    {
+        if (moveInput.sqrMagnitude > 0.01f)
+        {
+            footstepTimer -= Time.deltaTime;
+
+            if (footstepTimer <= 0f)
+            {
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.footstep);
+                }
+
+                footstepTimer = footstepInterval;
+            }
+        }
+        else
+        {
+            footstepTimer = 0f;
+        }
+    }
+
     private void OnValidate()
     {
         moveSpeed = Mathf.Max(0.1f, moveSpeed);
+        footstepInterval = Mathf.Max(0.05f, footstepInterval);
     }
 }

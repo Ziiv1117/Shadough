@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class TopdownBridgeCrossingZone : MonoBehaviour
 {
+    private const float BridgeOverlapTolerance = 0.02f;
+
     [Header("Bridge Check")]
     [SerializeField] private float detectionRadius = 1.1f;
     [SerializeField] private LayerMask detectionMask = ~0;
@@ -9,19 +11,35 @@ public class TopdownBridgeCrossingZone : MonoBehaviour
     [Header("Blocking")]
     [SerializeField] private GameObject crossingBlocker;
     [SerializeField] private bool makeBridgeColliderTrigger = true;
+    [SerializeField] private Transform playerRoot;
 
     [Header("Debug")]
     [SerializeField] private bool logStateChanges;
 
     private PastedShadowObject activeBridgeShadow;
+    private Collider2D[] blockerColliders;
+    private Collider2D[] playerColliders;
     private bool isOpen;
+    private bool blockerCollisionIgnored;
 
     public bool IsOpen => isOpen;
+
+    private void Awake()
+    {
+        CacheBlockerColliders();
+        CachePlayerColliders();
+
+        if (crossingBlocker != null && !crossingBlocker.activeSelf)
+        {
+            crossingBlocker.SetActive(true);
+        }
+    }
 
     private void Update()
     {
         PastedShadowObject bridgeShadow = FindBridgeShadow();
-        SetOpen(bridgeShadow != null, bridgeShadow);
+        SetBridgeShadow(bridgeShadow);
+        SetBlockerCollisionIgnored(ShouldLetPlayerCrossOnBridge());
     }
 
     private PastedShadowObject FindBridgeShadow()
@@ -44,7 +62,7 @@ public class TopdownBridgeCrossingZone : MonoBehaviour
         return null;
     }
 
-    private void SetOpen(bool open, PastedShadowObject bridgeShadow)
+    private void SetBridgeShadow(PastedShadowObject bridgeShadow)
     {
         if (activeBridgeShadow != null && activeBridgeShadow != bridgeShadow)
         {
@@ -52,11 +70,12 @@ public class TopdownBridgeCrossingZone : MonoBehaviour
         }
 
         activeBridgeShadow = bridgeShadow;
+        bool open = bridgeShadow != null;
         isOpen = open;
 
-        if (crossingBlocker != null && crossingBlocker.activeSelf == open)
+        if (crossingBlocker != null && !crossingBlocker.activeSelf)
         {
-            crossingBlocker.SetActive(!open);
+            crossingBlocker.SetActive(true);
         }
 
         if (open && makeBridgeColliderTrigger && activeBridgeShadow != null && activeBridgeShadow.ShapeCollider != null)
@@ -70,6 +89,110 @@ public class TopdownBridgeCrossingZone : MonoBehaviour
         }
     }
 
+    private bool ShouldLetPlayerCrossOnBridge()
+    {
+        if (activeBridgeShadow == null || activeBridgeShadow.ShapeCollider == null)
+        {
+            return false;
+        }
+
+        if (playerColliders == null || playerColliders.Length == 0)
+        {
+            CachePlayerColliders();
+        }
+
+        Collider2D bridgeCollider = activeBridgeShadow.ShapeCollider;
+        for (int i = 0; i < playerColliders.Length; i++)
+        {
+            Collider2D playerCollider = playerColliders[i];
+            if (playerCollider == null || playerCollider.isTrigger)
+            {
+                continue;
+            }
+
+            if (CollidersTouchOrOverlap(playerCollider, bridgeCollider))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool CollidersTouchOrOverlap(Collider2D a, Collider2D b)
+    {
+        if (a == null || b == null)
+        {
+            return false;
+        }
+
+        ColliderDistance2D distance = a.Distance(b);
+        return distance.isOverlapped || distance.distance <= BridgeOverlapTolerance;
+    }
+
+    private void SetBlockerCollisionIgnored(bool ignored)
+    {
+        if (blockerCollisionIgnored == ignored)
+        {
+            return;
+        }
+
+        if (blockerColliders == null || blockerColliders.Length == 0)
+        {
+            CacheBlockerColliders();
+        }
+
+        if (playerColliders == null || playerColliders.Length == 0)
+        {
+            CachePlayerColliders();
+        }
+
+        for (int blockerIndex = 0; blockerIndex < blockerColliders.Length; blockerIndex++)
+        {
+            Collider2D blockerCollider = blockerColliders[blockerIndex];
+            if (blockerCollider == null)
+            {
+                continue;
+            }
+
+            for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
+            {
+                Collider2D playerCollider = playerColliders[playerIndex];
+                if (playerCollider == null || playerCollider.isTrigger)
+                {
+                    continue;
+                }
+
+                Physics2D.IgnoreCollision(playerCollider, blockerCollider, ignored);
+            }
+        }
+
+        blockerCollisionIgnored = ignored;
+    }
+
+    private void CacheBlockerColliders()
+    {
+        blockerColliders = crossingBlocker != null
+            ? crossingBlocker.GetComponentsInChildren<Collider2D>(true)
+            : new Collider2D[0];
+    }
+
+    private void CachePlayerColliders()
+    {
+        if (playerRoot == null)
+        {
+            TopDownPlayerController player = FindObjectOfType<TopDownPlayerController>();
+            if (player != null)
+            {
+                playerRoot = player.transform;
+            }
+        }
+
+        playerColliders = playerRoot != null
+            ? playerRoot.GetComponentsInChildren<Collider2D>(true)
+            : new Collider2D[0];
+    }
+
     private void RestoreBridgeCollider(PastedShadowObject bridgeShadow)
     {
         if (bridgeShadow != null && bridgeShadow.ShapeCollider != null)
@@ -80,6 +203,8 @@ public class TopdownBridgeCrossingZone : MonoBehaviour
 
     private void OnDisable()
     {
+        SetBlockerCollisionIgnored(false);
+
         if (activeBridgeShadow != null)
         {
             RestoreBridgeCollider(activeBridgeShadow);

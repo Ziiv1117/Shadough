@@ -6,6 +6,7 @@ public class DoorController : MonoBehaviour
 {
     [SerializeField] private bool isOpen;
     [SerializeField] private Collider2D doorCollider;
+    [SerializeField] private Collider2D[] additionalClosedColliders = new Collider2D[0];
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float openAlpha = 0.28f;
     [SerializeField] private Color closedColor = Color.white;
@@ -58,9 +59,14 @@ public class DoorController : MonoBehaviour
 
     private void ApplyOpenState()
     {
-        if (doorCollider != null)
+        SetColliderBlocking(doorCollider, !isOpen);
+
+        if (additionalClosedColliders != null)
         {
-            doorCollider.enabled = !isOpen;
+            for (int i = 0; i < additionalClosedColliders.Length; i++)
+            {
+                SetColliderBlocking(additionalClosedColliders[i], !isOpen);
+            }
         }
 
         if (spriteRenderer == null)
@@ -75,6 +81,14 @@ public class DoorController : MonoBehaviour
         }
 
         spriteRenderer.color = color;
+    }
+
+    private void SetColliderBlocking(Collider2D targetCollider, bool blocking)
+    {
+        if (targetCollider != null)
+        {
+            targetCollider.enabled = blocking;
+        }
     }
 
     private void CacheComponents()
