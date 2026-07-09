@@ -1,23 +1,65 @@
+using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealthUI : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] private Vector2 panelOffset = new Vector2(14f, 14f);
-    [SerializeField] private Vector2 panelSize = new Vector2(150f, 32f);
-    [SerializeField] private bool anchorTopRight = true;
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private RectTransform panelRoot;
+    [SerializeField] private Text titleText;
+    [SerializeField] private Text valueText;
+    [SerializeField] private Text marksText;
+    [SerializeField] private Image panelImage;
+    [SerializeField] private Vector2 panelOffset = new Vector2(24f, 24f);
+    [SerializeField] private Vector2 panelSize = new Vector2(280f, 92f);
+    [SerializeField] private bool anchorTopRight;
     [SerializeField] private bool hideWhileTutorialPromptOpen = true;
+    [SerializeField] private Color fullMarkColor = new Color(0.82f, 0.18f, 0.12f);
+    [SerializeField] private Color emptyMarkColor = new Color(0.18f, 0.13f, 0.1f, 0.74f);
 
+    private readonly StringBuilder marksBuilder = new StringBuilder(96);
     private GUIStyle boxStyle;
     private GUIStyle textStyle;
+    private bool subscribedToHealth;
 
     private void Awake()
     {
         EnsurePlayerHealth();
+        SubscribeToHealth();
+        RefreshHealth();
+    }
+
+    private void OnEnable()
+    {
+        EnsurePlayerHealth();
+        SubscribeToHealth();
+        RefreshHealth();
+    }
+
+    private void Update()
+    {
+        if (canvasGroup == null && panelRoot == null)
+        {
+            return;
+        }
+
+        bool hidden = hideWhileTutorialPromptOpen && TutorialSignPromptController.IsPromptOpen;
+        SetCanvasVisible(!hidden);
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromHealth();
     }
 
     private void OnGUI()
     {
+        if (HasCanvasUI())
+        {
+            return;
+        }
+
         if (hideWhileTutorialPromptOpen && TutorialSignPromptController.IsPromptOpen)
         {
             return;
@@ -56,6 +98,105 @@ public class PlayerHealthUI : MonoBehaviour
         return "HP: [" + marks + "]";
     }
 
+    private void HandleHealthChanged(int current, int max)
+    {
+        RefreshHealth(current, max);
+    }
+
+    private void RefreshHealth()
+    {
+        EnsurePlayerHealth();
+        if (playerHealth == null)
+        {
+            RefreshHealth(0, 0);
+            return;
+        }
+
+        RefreshHealth(playerHealth.CurrentHealth, playerHealth.MaxHealth);
+    }
+
+    private void RefreshHealth(int current, int max)
+    {
+        if (titleText != null)
+        {
+            titleText.text = "HP";
+        }
+
+        if (valueText != null)
+        {
+            valueText.text = Mathf.Max(0, current) + " / " + Mathf.Max(0, max);
+        }
+
+        if (marksText != null)
+        {
+            marksText.supportRichText = true;
+            marksText.text = BuildRichHealthMarks(current, max);
+        }
+    }
+
+    private string BuildRichHealthMarks(int current, int max)
+    {
+        marksBuilder.Length = 0;
+        string fullColor = ColorUtility.ToHtmlStringRGB(fullMarkColor);
+        string emptyColor = ColorUtility.ToHtmlStringRGB(emptyMarkColor);
+
+        for (int i = 0; i < max; i++)
+        {
+            string color = i < current ? fullColor : emptyColor;
+            marksBuilder.Append("<color=#");
+            marksBuilder.Append(color);
+            marksBuilder.Append(">●</color>");
+            if (i < max - 1)
+            {
+                marksBuilder.Append(" ");
+            }
+        }
+
+        return marksBuilder.ToString();
+    }
+
+    private bool HasCanvasUI()
+    {
+        return panelRoot != null || titleText != null || valueText != null || marksText != null || panelImage != null;
+    }
+
+    private void SetCanvasVisible(bool visible)
+    {
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = visible ? 1f : 0f;
+            canvasGroup.interactable = visible;
+            canvasGroup.blocksRaycasts = visible;
+        }
+
+        if (panelRoot != null && canvasGroup == null)
+        {
+            panelRoot.gameObject.SetActive(visible);
+        }
+    }
+
+    private void SubscribeToHealth()
+    {
+        if (subscribedToHealth || playerHealth == null)
+        {
+            return;
+        }
+
+        playerHealth.OnHealthChanged += HandleHealthChanged;
+        subscribedToHealth = true;
+    }
+
+    private void UnsubscribeFromHealth()
+    {
+        if (!subscribedToHealth || playerHealth == null)
+        {
+            return;
+        }
+
+        playerHealth.OnHealthChanged -= HandleHealthChanged;
+        subscribedToHealth = false;
+    }
+
     private void EnsurePlayerHealth()
     {
         if (playerHealth == null)
@@ -86,9 +227,10 @@ public class PlayerHealthUI : MonoBehaviour
 
     private void OnValidate()
     {
-        panelSize.x = Mathf.Max(110f, panelSize.x);
-        panelSize.y = Mathf.Clamp(panelSize.y, 28f, 40f);
+        panelSize.x = Mathf.Max(180f, panelSize.x);
+        panelSize.y = Mathf.Clamp(panelSize.y, 56f, 140f);
         panelOffset.x = Mathf.Max(0f, panelOffset.x);
         panelOffset.y = Mathf.Max(0f, panelOffset.y);
+        RefreshHealth();
     }
 }

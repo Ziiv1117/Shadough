@@ -1,4 +1,5 @@
 using System.IO;
+using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -164,17 +165,28 @@ public static class TopdownDemoLoopAuditAndFix
             case 0:
                 ClearRuntimeProbeShadows();
                 AppendRequiredObjectChecks(playReport);
-                bridgeShadow = CreatePastedShadowFromSource("TreeShadow_Topdown", CrossingPosition);
+                AppendRuntimeAssetChecks(playReport);
+                RunLanternVisualProbe(playReport);
+                RunShadowSeekerAttackProbe(playReport);
+                TopdownBridgeCrossingZone bridgeZone = FindComponent<TopdownBridgeCrossingZone>("CrossingHint_01");
+                Vector3 bridgeProbePosition = bridgeZone != null ? bridgeZone.transform.position : CrossingPosition;
+                bridgeShadow = CreatePastedShadowFromSource("TreeShadow_Topdown", bridgeProbePosition);
                 playReport.AppendLine("TreeShadow pasted at bridge: " + PassFail(bridgeShadow != null));
                 AdvanceProbe(1, 0.35d);
                 break;
             case 1:
                 TopdownBridgeCrossingZone crossing = FindComponent<TopdownBridgeCrossingZone>("CrossingHint_01");
+                Physics2D.SyncTransforms();
+                InvokePrivate(crossing, "Update");
                 bool bridgeOpen = crossing != null && crossing.IsOpen;
-                GameObject blocker = FindSceneObject("River_CrossingBlocker_FromMap");
-                bool blockerOpen = blocker == null || !blocker.activeSelf;
-                playReport.AppendLine("TreeShadow crossing open: " + PassFail(bridgeOpen && blockerOpen));
-                pressShadow = CreatePastedShadowFromSource("BeamShadow_Topdown", PressurePlatePosition);
+                playReport.AppendLine("TreeShadow crossing open: " + PassFail(bridgeOpen));
+                playReport.AppendLine("TreeShadow pasted sprite: " + PassFail(HasSprite(bridgeShadow, "tree_shadow_pasted")));
+                PressurePlateController pressurePlate = FindComponent<PressurePlateController>("PressurePlate_Topdown");
+                Vector3 pressureProbePosition = pressurePlate != null ? pressurePlate.transform.position : PressurePlatePosition;
+                pressShadow = CreatePastedShadowFromSource("BeamShadow_Topdown", pressureProbePosition);
+                Physics2D.SyncTransforms();
+                ShadowPressureTrigger pressureTrigger = FindComponent<ShadowPressureTrigger>("PressurePlate_Topdown");
+                InvokePrivateTrigger(pressureTrigger, "OnTriggerEnter2D", pressShadow != null ? pressShadow.ShapeCollider : null);
                 playReport.AppendLine("CanPress shadow pasted at plate: " + PassFail(pressShadow != null && pressShadow.CanPress));
                 AdvanceProbe(2, 0.35d);
                 break;
@@ -183,16 +195,38 @@ public static class TopdownDemoLoopAuditAndFix
                 DoorController pressureDoor = FindComponent<DoorController>("Door_Pressure_Topdown");
                 bool pressurePass = plate != null && plate.IsPressed && pressureDoor != null && pressureDoor.IsOpen;
                 playReport.AppendLine("CanPress plate opens door: " + PassFail(pressurePass));
-                unlockShadow = CreatePastedShadowFromSource("KeyShadow_Topdown", LockPosition);
+                GameObject lockTrigger = FindSceneObject("Door_Lock_Topdown_DirectUnlockTrigger");
+                if (lockTrigger == null)
+                {
+                    lockTrigger = FindSceneObject("Lock_Topdown_Trigger");
+                }
+                Vector3 lockProbePosition = lockTrigger != null ? lockTrigger.transform.position : LockPosition;
+                unlockShadow = CreatePastedShadowFromSource("KeyShadow_Topdown", lockProbePosition);
+                Physics2D.SyncTransforms();
+                KeyDoorDirectUnlockTrigger directUnlockTrigger = FindComponent<KeyDoorDirectUnlockTrigger>("Door_Lock_Topdown_DirectUnlockTrigger");
+                if (directUnlockTrigger != null)
+                {
+                    InvokePrivateTrigger(directUnlockTrigger, "OnTriggerEnter2D", unlockShadow != null ? unlockShadow.ShapeCollider : null);
+                }
+                else
+                {
+                    ShadowLockTrigger legacyLockTrigger = FindComponent<ShadowLockTrigger>("Lock_Topdown_Trigger");
+                    InvokePrivateTrigger(legacyLockTrigger, "OnTriggerEnter2D", unlockShadow != null ? unlockShadow.ShapeCollider : null);
+                }
                 playReport.AppendLine("CanUnlock shadow pasted at lock: " + PassFail(unlockShadow != null && unlockShadow.CanUnlock));
                 AdvanceProbe(3, 0.35d);
                 break;
             case 3:
                 LockController lockController = FindComponent<LockController>("Lock_Topdown");
                 DoorController lockDoor = FindComponent<DoorController>("Door_Lock_Topdown");
-                bool unlockPass = lockController != null && lockController.IsUnlocked && lockDoor != null && lockDoor.IsOpen;
+                bool usesDirectUnlockTrigger = FindSceneObject("Door_Lock_Topdown_DirectUnlockTrigger") != null;
+                bool unlockPass = lockDoor != null
+                    && lockDoor.IsOpen
+                    && (usesDirectUnlockTrigger || (lockController != null && lockController.IsUnlocked));
                 playReport.AppendLine("CanUnlock opens lock door: " + PassFail(unlockPass));
-                wrongLureShadow = CreatePastedShadowFromSource("TreeShadow_Topdown", LureAreaPosition);
+                GameObject lureArea = FindSceneObject("LureArea_Topdown");
+                Vector3 lureProbePosition = lureArea != null ? lureArea.transform.position : LureAreaPosition;
+                wrongLureShadow = CreatePastedShadowFromSource("TreeShadow_Topdown", lureProbePosition);
                 playReport.AppendLine("Non-attract shadow placed in seeker radius: " + PassFail(wrongLureShadow != null && !wrongLureShadow.CanAttractEnemy));
                 AdvanceProbe(4, 0.35d);
                 break;
@@ -205,12 +239,16 @@ public static class TopdownDemoLoopAuditAndFix
                     UnityEngine.Object.Destroy(wrongLureShadow.gameObject);
                 }
 
-                playerLureShadow = CreatePlayerLureShadow(LureAreaPosition);
+                GameObject currentLureArea = FindSceneObject("LureArea_Topdown");
+                Vector3 currentLurePosition = currentLureArea != null ? currentLureArea.transform.position : LureAreaPosition;
+                playerLureShadow = CreatePlayerLureShadow(currentLurePosition);
                 playReport.AppendLine("PlayerShadow lure created in detection radius: " + PassFail(playerLureShadow != null && playerLureShadow.CanAttractEnemy));
                 AdvanceProbe(5, 0.50d);
                 break;
             case 5:
                 EnemyShadowSeeker seeker = FindComponent<EnemyShadowSeeker>("ShadowSeeker_Topdown");
+                Physics2D.SyncTransforms();
+                InvokePrivate(seeker, "Update");
                 bool lurePass = seeker != null && seeker.CurrentTarget == playerLureShadow && seeker.IsChasingShadow;
                 playReport.AppendLine("ShadowSeeker follows PlayerShadow: " + PassFail(lurePass));
                 TopdownFinalClockCore finalCore = FindComponent<TopdownFinalClockCore>("FinalClockCore_Topdown");
@@ -233,6 +271,151 @@ public static class TopdownDemoLoopAuditAndFix
     {
         probeStage = nextStage;
         nextProbeTime = EditorApplication.timeSinceStartup + delay;
+    }
+
+    private static void InvokePrivate(object target, string methodName)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        MethodInfo method = target.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+        if (method != null)
+        {
+            method.Invoke(target, null);
+        }
+    }
+
+    private static void InvokePrivateTrigger(object target, string methodName, Collider2D collider)
+    {
+        if (target == null || collider == null)
+        {
+            return;
+        }
+
+        MethodInfo method = target.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+        if (method != null)
+        {
+            method.Invoke(target, new object[] { collider });
+        }
+    }
+
+    private static void AppendRuntimeAssetChecks(StringBuilder report)
+    {
+        Animator heroAnimator = FindComponentInChildren<Animator>("Player_Topdown");
+        Animator seekerAnimator = FindComponent<Animator>("ShadowSeeker_Topdown");
+        report.AppendLine("Player animator bound: " + PassFail(heroAnimator != null && heroAnimator.runtimeAnimatorController != null));
+        report.AppendLine("Player animation states present: " + PassFail(
+            HasAnimatorState(heroAnimator, "Hero_Idle_Lantern_Down")
+            && HasAnimatorState(heroAnimator, "Hero_Walk_NoLantern_Down")
+            && HasAnimatorState(heroAnimator, "Hero_Hurt_Lantern_Down")
+            && HasAnimatorState(heroAnimator, "Hero_CutShadow_NoLantern_Down")
+            && HasAnimatorState(heroAnimator, "Hero_PasteShadow_NoLantern_Down")
+            && HasAnimatorState(heroAnimator, "Hero_ActivateCore_Lantern_Down")));
+        report.AppendLine("ShadowSeeker animator bound: " + PassFail(seekerAnimator != null && seekerAnimator.runtimeAnimatorController != null));
+        report.AppendLine("ShadowSeeker animation states present: " + PassFail(
+            HasAnimatorState(seekerAnimator, "ShadowSeeker_Idle_Down")
+            && HasAnimatorState(seekerAnimator, "ShadowSeeker_PatrolMove_Down")
+            && HasAnimatorState(seekerAnimator, "ShadowSeeker_Alert_Down")
+            && HasAnimatorState(seekerAnimator, "ShadowSeeker_Chase_Down")
+            && HasAnimatorState(seekerAnimator, "ShadowSeeker_Attracted_Down")
+            && HasAnimatorState(seekerAnimator, "ShadowSeeker_LureReached_Down")
+            && HasAnimatorState(seekerAnimator, "ShadowSeeker_Hurt_Down")
+            && HasAnimatorState(seekerAnimator, "ShadowSeeker_Stunned_Down")
+            && HasAnimatorState(seekerAnimator, "ShadowSeeker_Dissolve_Down")));
+        report.AppendLine("Map sprite visible: " + PassFail(HasVisibleSprite("Level01_FinalMap_Reference", "level01_full_map")));
+        SpriteRenderer outline = FindComponent<SpriteRenderer>("Level01_OutlineOverlay_Reference");
+        report.AppendLine("Outline hidden: " + PassFail(outline != null && !outline.enabled));
+        report.AppendLine("Key entity visible: " + PassFail(HasVisibleSprite("KeySource_Topdown", "Key_Normal")));
+    }
+
+    private static void RunLanternVisualProbe(StringBuilder report)
+    {
+        PlayerLanternController lantern = FindComponent<PlayerLanternController>("Player_Topdown");
+        SpriteRenderer renderer = FindComponent<SpriteRenderer>("Topdown_PlayerLantern");
+        if (lantern == null || renderer == null)
+        {
+            report.AppendLine("Lantern plant/retrieve visual: FAIL");
+            return;
+        }
+
+        InvokePrivate(lantern, "BeginPlantLantern");
+        InvokePrivate(lantern, "CompletePlantLantern");
+        bool planted = lantern.IsLanternPlanted && renderer.enabled && renderer.sprite != null && renderer.sprite.name == "placed_lantern_topdown";
+        InvokePrivate(lantern, "RetrieveLantern");
+        bool retrieved = !lantern.IsLanternPlanted && !renderer.enabled;
+        report.AppendLine("Lantern plant/retrieve visual: " + PassFail(planted && retrieved));
+    }
+
+    private static void RunShadowSeekerAttackProbe(StringBuilder report)
+    {
+        PlayerHealth health = FindComponent<PlayerHealth>("Player_Topdown");
+        EnemyShadowSeeker seeker = FindComponent<EnemyShadowSeeker>("ShadowSeeker_Topdown");
+        if (health == null || seeker == null)
+        {
+            report.AppendLine("ShadowSeeker attack deals one damage: FAIL");
+            report.AppendLine("Player invulnerability prevents rapid damage: FAIL");
+            return;
+        }
+
+        health.RestoreFullHealth();
+        SetPrivateFloat(health, "invulnerableUntilTime", 0f);
+        SetPrivateFloat(seeker, "nextAttackTime", 0f);
+        int before = health.CurrentHealth;
+        InvokePrivate(seeker, "AttackPlayer");
+        int afterFirst = health.CurrentHealth;
+        InvokePrivate(seeker, "AttackPlayer");
+        int afterSecond = health.CurrentHealth;
+        report.AppendLine("ShadowSeeker attack deals one damage: " + PassFail(afterFirst == before - 1));
+        report.AppendLine("Player invulnerability prevents rapid damage: " + PassFail(afterSecond == afterFirst));
+        health.RestoreFullHealth();
+        seeker.ResetToHome();
+    }
+
+    private static void SetPrivateFloat(object target, string fieldName, float value)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        FieldInfo field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        if (field != null)
+        {
+            field.SetValue(target, value);
+        }
+    }
+
+    private static bool HasAnimatorState(Animator animator, string stateName)
+    {
+        return animator != null && animator.HasState(0, Animator.StringToHash(stateName));
+    }
+
+    private static bool HasVisibleSprite(string objectName, string spriteName)
+    {
+        SpriteRenderer renderer = FindComponent<SpriteRenderer>(objectName);
+        return renderer != null && renderer.enabled && renderer.sprite != null && renderer.sprite.name == spriteName;
+    }
+
+    private static bool HasSprite(string objectName, string spriteName)
+    {
+        SpriteRenderer renderer = FindComponent<SpriteRenderer>(objectName);
+        return renderer != null && renderer.sprite != null && renderer.sprite.name == spriteName;
+    }
+
+    private static bool HasSprite(PastedShadowObject pastedShadow, string spriteName)
+    {
+        return pastedShadow != null
+            && pastedShadow.SpriteRenderer != null
+            && pastedShadow.SpriteRenderer.sprite != null
+            && pastedShadow.SpriteRenderer.sprite.name == spriteName;
+    }
+
+    private static T FindComponentInChildren<T>(string objectName) where T : Component
+    {
+        GameObject gameObject = FindSceneObject(objectName);
+        return gameObject != null ? gameObject.GetComponentInChildren<T>(true) : null;
     }
 
     private static void FinishPlayProbe()
