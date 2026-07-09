@@ -765,44 +765,105 @@ public static class TopdownPixelBlockoutLayoutSetup
                 break;
             case 1:
                 TopdownBridgeCrossingZone crossing = FindComponent<TopdownBridgeCrossingZone>("CrossingHint_01");
-                InvokePrivateUpdate(crossing);
                 GameObject blocker = FindSceneObject("Wall_River_BrokenBridge_Blocker");
                 if (blocker == null)
                 {
                     blocker = FindSceneObject("River_CrossingBlocker_Accurate");
                 }
-                bool bridgePass = crossing != null && crossing.IsOpen && (blocker == null || !blocker.activeSelf);
+                GameObject player = FindSceneObject("Player_Topdown");
+                if (player != null && bridgeShadow != null)
+                {
+                    player.transform.position = bridgeShadow.transform.position;
+                    Physics2D.SyncTransforms();
+                }
+
+                InvokePrivateUpdate(crossing);
+                bool bridgeCollisionIgnored = AnyPlayerBlockerCollisionIgnored(player, blocker);
+                bool blockerStillActive = blocker != null && blocker.activeSelf;
+
+                if (player != null && bridgeShadow != null && bridgeShadow.ShapeCollider != null)
+                {
+                    Bounds shadowBounds = bridgeShadow.ShapeCollider.bounds;
+                    Bounds playerBounds = GetColliderBounds(player);
+                    float yOffset = shadowBounds.extents.y + playerBounds.extents.y + 0.35f;
+                    player.transform.position = shadowBounds.center + new Vector3(0f, yOffset, 0f);
+                    Physics2D.SyncTransforms();
+                }
+
+                InvokePrivateUpdate(crossing);
+                bool uncoveredWaterBlocked = !AnyPlayerBlockerCollisionIgnored(player, blocker) && blockerStillActive;
+                bool bridgePass = crossing != null && crossing.IsOpen && blockerStillActive && bridgeCollisionIgnored && uncoveredWaterBlocked;
                 playProbeReport.AppendLine("TreeShadow crossing open: " + PassFail(bridgePass));
+                playProbeReport.AppendLine("River blocker remains active: " + PassFail(blockerStillActive));
+                playProbeReport.AppendLine("TreeShadow bridge only ignores blocker while player overlaps shadow: " + PassFail(bridgeCollisionIgnored));
+                playProbeReport.AppendLine("Uncovered water keeps blocker collision: " + PassFail(uncoveredWaterBlocked));
                 pressShadow = CreatePastedShadowFromSource("BeamShadow_Topdown", PressPlateAnchor);
                 playProbeReport.AppendLine("CanPress shadow pasted at plate: " + PassFail(pressShadow != null && pressShadow.CanPress));
                 AdvancePlayProbe(2, 1.00d);
                 break;
             case 2:
                 ShadowPressureTrigger pressureTrigger = FindComponent<ShadowPressureTrigger>("PressurePlate_Topdown");
+                DoorController pressureDoor = FindComponent<DoorController>("Door_Pressure_Topdown");
+                bool doorBlocksWhenClosed = pressureDoor != null && !pressureDoor.IsOpen && AnyDoorBlockingColliderEnabled(pressureDoor);
+                playProbeReport.AppendLine("Door blocks when closed: " + PassFail(doorBlocksWhenClosed));
+
                 if (pressShadow != null)
                 {
                     InvokePrivateTrigger(pressureTrigger, "OnTriggerEnter2D", pressShadow.ShapeCollider);
                 }
 
                 PressurePlateController plate = FindComponent<PressurePlateController>("PressurePlate_Topdown");
-                DoorController pressureDoor = FindComponent<DoorController>("Door_Pressure_Topdown");
                 bool pressPass = plate != null && plate.IsPressed && pressureDoor != null && pressureDoor.IsOpen;
                 playProbeReport.AppendLine("CanPress plate opens door: " + PassFail(pressPass));
+                bool doorPassableWhenOpen = pressureDoor != null && pressureDoor.IsOpen && !AnyDoorBlockingColliderEnabled(pressureDoor);
+                playProbeReport.AppendLine("Door passable when open: " + PassFail(doorPassableWhenOpen));
+                bool noHiddenDoorBlocker = pressureDoor != null && !HasEnabledDoorPassageBlocker(pressureDoor.gameObject);
+                playProbeReport.AppendLine("No hidden blocker after door opens: " + PassFail(noHiddenDoorBlocker));
+                FreeShadowPlacer placer = FindComponent<FreeShadowPlacer>("Player_Topdown");
+                playProbeReport.AppendLine("Held shadow placement radius close: " + PassFail(GetSerializedFloat(placer, "placementRadius") <= 1.1f));
                 unlockShadow = CreatePastedShadowFromSource("KeyShadow_Topdown", KeyLockAnchor);
-                playProbeReport.AppendLine("CanUnlock shadow pasted at lock: " + PassFail(unlockShadow != null && unlockShadow.CanUnlock));
+                playProbeReport.AppendLine("CanUnlock shadow pasted at key door: " + PassFail(unlockShadow != null && unlockShadow.CanUnlock));
                 AdvancePlayProbe(3, 1.00d);
                 break;
             case 3:
-                ShadowLockTrigger lockTrigger = FindComponent<ShadowLockTrigger>("Lock_Topdown_Trigger");
-                if (unlockShadow != null)
+                KeyDoorDirectUnlockTrigger keyDoorTrigger = FindComponent<KeyDoorDirectUnlockTrigger>("Door_Lock_Topdown_DirectUnlockTrigger");
+                DoorController lockDoor = FindComponent<DoorController>("Door_Lock_Topdown");
+                keyDoorTrigger?.ResetDoor();
+
+                Collider2D playerCollider = FindComponent<Collider2D>("Player_Topdown");
+                InvokePrivateTrigger(keyDoorTrigger, "OnTriggerEnter2D", playerCollider);
+                bool playerBodyDoesNotUnlock = keyDoorTrigger != null && !keyDoorTrigger.IsUnlocked && lockDoor != null && !lockDoor.IsOpen;
+                playProbeReport.AppendLine("Player body does not unlock key door: " + PassFail(playerBodyDoesNotUnlock));
+
+                if (pressShadow != null)
                 {
-                    InvokePrivateTrigger(lockTrigger, "OnTriggerEnter2D", unlockShadow.ShapeCollider);
+                    InvokePrivateTrigger(keyDoorTrigger, "OnTriggerEnter2D", pressShadow.ShapeCollider);
                 }
 
-                LockController lockController = FindComponent<LockController>("Lock_Topdown");
-                DoorController lockDoor = FindComponent<DoorController>("Door_Lock_Topdown");
-                bool unlockPass = lockController != null && lockController.IsUnlocked && lockDoor != null && lockDoor.IsOpen;
-                playProbeReport.AppendLine("CanUnlock opens lock door: " + PassFail(unlockPass));
+                bool canPressDoesNotUnlock = keyDoorTrigger != null && !keyDoorTrigger.IsUnlocked && lockDoor != null && !lockDoor.IsOpen;
+                playProbeReport.AppendLine("CanPress shadow does not unlock key door: " + PassFail(canPressDoesNotUnlock));
+
+                PastedShadowObject temporaryPlayerShadow = CreatePlayerLureShadow(KeyLockAnchor + new Vector3(-0.6f, 0.25f, 0f));
+                if (temporaryPlayerShadow != null)
+                {
+                    InvokePrivateTrigger(keyDoorTrigger, "OnTriggerEnter2D", temporaryPlayerShadow.ShapeCollider);
+                }
+
+                bool playerShadowDoesNotUnlock = keyDoorTrigger != null && !keyDoorTrigger.IsUnlocked && lockDoor != null && !lockDoor.IsOpen;
+                playProbeReport.AppendLine("PlayerShadow does not unlock key door: " + PassFail(playerShadowDoesNotUnlock));
+                if (temporaryPlayerShadow != null)
+                {
+                    Object.Destroy(temporaryPlayerShadow.gameObject);
+                }
+
+                if (unlockShadow != null)
+                {
+                    InvokePrivateTrigger(keyDoorTrigger, "OnTriggerEnter2D", unlockShadow.ShapeCollider);
+                }
+
+                bool unlockPass = keyDoorTrigger != null && keyDoorTrigger.IsUnlocked && lockDoor != null && lockDoor.IsOpen;
+                playProbeReport.AppendLine("CanUnlock pasted shadow unlocks key door: " + PassFail(unlockPass));
+                playProbeReport.AppendLine("CanUnlock opens key door: " + PassFail(unlockPass));
                 wrongLureShadow = CreatePastedShadowFromSource("TreeShadow_Topdown", LureMidpoint + new Vector3(2.0f, 0.1f, 0f));
                 playProbeReport.AppendLine("Non-attract shadow placed in seeker radius: " + PassFail(wrongLureShadow != null && !wrongLureShadow.CanAttractEnemy));
                 AdvancePlayProbe(4, 0.35d);
@@ -889,6 +950,178 @@ public static class TopdownPixelBlockoutLayoutSetup
         {
             method.Invoke(behaviour, new object[] { collider });
         }
+    }
+
+    private static bool AnyPlayerBlockerCollisionIgnored(GameObject player, GameObject blocker)
+    {
+        if (player == null || blocker == null)
+        {
+            return false;
+        }
+
+        Collider2D[] playerColliders = player.GetComponentsInChildren<Collider2D>(true);
+        Collider2D[] blockerColliders = blocker.GetComponentsInChildren<Collider2D>(true);
+        for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
+        {
+            Collider2D playerCollider = playerColliders[playerIndex];
+            if (playerCollider == null || playerCollider.isTrigger)
+            {
+                continue;
+            }
+
+            for (int blockerIndex = 0; blockerIndex < blockerColliders.Length; blockerIndex++)
+            {
+                Collider2D blockerCollider = blockerColliders[blockerIndex];
+                if (blockerCollider != null && Physics2D.GetIgnoreCollision(playerCollider, blockerCollider))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static Bounds GetColliderBounds(GameObject gameObject)
+    {
+        Collider2D[] colliders = gameObject != null
+            ? gameObject.GetComponentsInChildren<Collider2D>(true)
+            : new Collider2D[0];
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Collider2D collider = colliders[i];
+            if (collider != null && !collider.isTrigger)
+            {
+                return collider.bounds;
+            }
+        }
+
+        return new Bounds(gameObject != null ? gameObject.transform.position : Vector3.zero, Vector3.zero);
+    }
+
+    private static bool AnyDoorBlockingColliderEnabled(DoorController door)
+    {
+        if (door == null)
+        {
+            return false;
+        }
+
+        SerializedObject serializedDoor = new SerializedObject(door);
+        Collider2D doorCollider = serializedDoor.FindProperty("doorCollider")?.objectReferenceValue as Collider2D;
+        if (doorCollider != null && doorCollider.enabled && !doorCollider.isTrigger)
+        {
+            return true;
+        }
+
+        SerializedProperty extras = serializedDoor.FindProperty("additionalClosedColliders");
+        if (extras != null)
+        {
+            for (int i = 0; i < extras.arraySize; i++)
+            {
+                Collider2D extra = extras.GetArrayElementAtIndex(i).objectReferenceValue as Collider2D;
+                if (extra != null && extra.enabled && !extra.isTrigger)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static bool HasEnabledDoorPassageBlocker(GameObject door)
+    {
+        if (door == null)
+        {
+            return false;
+        }
+
+        Collider2D doorCollider = door.GetComponent<Collider2D>();
+        if (doorCollider == null)
+        {
+            return false;
+        }
+
+        Bounds passageBounds = doorCollider.bounds;
+        passageBounds.Expand(new Vector3(0.2f, 0.2f, 0f));
+
+        Collider2D[] colliders = Object.FindObjectsOfType<Collider2D>(true);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Collider2D collider = colliders[i];
+            if (collider == null
+                || !collider.enabled
+                || collider.isTrigger
+                || collider == doorCollider
+                || collider.gameObject == door
+                || collider.transform.IsChildOf(door.transform)
+                || !LooksLikeDoorPassageBlocker(collider.gameObject)
+                || !IsCentralDoorBlocker(collider, doorCollider)
+                || !collider.bounds.Intersects(passageBounds))
+            {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsCentralDoorBlocker(Collider2D candidate, Collider2D doorCollider)
+    {
+        if (candidate == null || doorCollider == null)
+        {
+            return false;
+        }
+
+        Bounds doorBounds = doorCollider.bounds;
+        float minX = doorBounds.min.x + doorBounds.size.x * 0.18f;
+        float maxX = doorBounds.max.x - doorBounds.size.x * 0.18f;
+        float minY = doorBounds.min.y - 0.2f;
+        float maxY = doorBounds.max.y + 0.2f;
+        Vector3 center = candidate.bounds.center;
+        return center.x >= minX && center.x <= maxX && center.y >= minY && center.y <= maxY;
+    }
+
+    private static bool LooksLikeDoorPassageBlocker(GameObject gameObject)
+    {
+        string objectName = gameObject.name;
+        if (objectName.Contains("graybox_template")
+            || objectName.Contains("Graybox")
+            || objectName.Contains("Collision")
+            || objectName.Contains("Blocker")
+            || objectName.StartsWith("Wall_"))
+        {
+            return true;
+        }
+
+        Transform parent = gameObject.transform.parent;
+        while (parent != null)
+        {
+            string parentName = parent.name;
+            if (parentName.Contains("Graybox") || parentName.Contains("Collision"))
+            {
+                return true;
+            }
+
+            parent = parent.parent;
+        }
+
+        return false;
+    }
+
+    private static float GetSerializedFloat(Component component, string propertyName)
+    {
+        if (component == null)
+        {
+            return 0f;
+        }
+
+        SerializedObject serializedObject = new SerializedObject(component);
+        SerializedProperty property = serializedObject.FindProperty(propertyName);
+        return property != null ? property.floatValue : 0f;
     }
 
     private static void AppendRequiredObjectChecks(StringBuilder report)
