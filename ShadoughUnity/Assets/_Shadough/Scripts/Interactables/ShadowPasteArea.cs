@@ -112,6 +112,7 @@ public class ShadowPasteArea : MonoBehaviour
     private void TryPaste(ShadowInventory inventory)
     {
         ShadowType currentShadowType = inventory.CurrentShadowType;
+
         if (currentShadowType != requiredShadowType)
         {
             ShowMessage(wrongShadowMessage, 1.2f);
@@ -120,6 +121,12 @@ public class ShadowPasteArea : MonoBehaviour
         }
 
         inventory.ConsumeShadow();
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.pasteShadow);
+        }
+
         Activate();
     }
 

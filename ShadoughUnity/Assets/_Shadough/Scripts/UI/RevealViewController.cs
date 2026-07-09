@@ -25,6 +25,7 @@ public class RevealViewController : MonoBehaviour
     private readonly Dictionary<SpriteRenderer, Color> originalColors = new Dictionary<SpriteRenderer, Color>();
     private Texture2D overlayTexture;
 
+    private bool previousRevealState;
     public static RevealViewController Instance { get; private set; }
     public static bool HasInstance => Instance != null;
     public static bool IsActive => Instance != null && Instance.IsRevealActive;
@@ -49,6 +50,16 @@ public class RevealViewController : MonoBehaviour
         if (shouldReveal != isRevealActive)
         {
             SetRevealActive(shouldReveal);
+
+            if (shouldReveal && !previousRevealState)
+            {
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.revealShadow);
+                }
+            }
+
+            previousRevealState = shouldReveal;
         }
 
         if (isRevealActive)

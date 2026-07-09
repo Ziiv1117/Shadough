@@ -185,6 +185,7 @@ public class ShadowCutter : MonoBehaviour
         return false;
     }
 
+    
     private void TryCutCurrentTarget()
     {
         if (!inventory.CanCarry())
@@ -216,6 +217,7 @@ public class ShadowCutter : MonoBehaviour
         }
 
         ShadowItemData itemData = currentTarget.CreateItemData();
+
         if (!currentTarget.Cut())
         {
             ShowTemporaryPrompt("Cannot cut shadow", 1.2f);
@@ -229,29 +231,34 @@ public class ShadowCutter : MonoBehaviour
             return;
         }
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.cutShadow);
+        }
+
         ShowTemporaryPrompt("Cut " + type, 1.2f);
     }
 
-    private void TryCutPastedTarget()
-    {
-        ShadowItemData itemData = currentPastedTarget.CreateItemData();
-        if (itemData == null || !itemData.IsValid())
+        private void TryCutPastedTarget()
         {
-            ShowTemporaryPrompt("Cannot cut shadow", 1.2f);
-            return;
-        }
+            ShadowItemData itemData = currentPastedTarget.CreateItemData();
+            if (itemData == null || !itemData.IsValid())
+            {
+                ShowTemporaryPrompt("Cannot cut shadow", 1.2f);
+                return;
+            }
 
-        if (!inventory.PickUpShadow(itemData))
-        {
-            ShowTemporaryPrompt("Shadow slot full", 1.2f);
-            return;
-        }
+            if (!inventory.PickUpShadow(itemData))
+            {
+                ShowTemporaryPrompt("Shadow slot full", 1.2f);
+                return;
+            }
 
-        ShadowType type = itemData.shadowType;
-        Destroy(currentPastedTarget.gameObject);
-        currentPastedTarget = null;
-        ShowTemporaryPrompt("Cut " + type, 1.2f);
-    }
+            ShadowType type = itemData.shadowType;
+            Destroy(currentPastedTarget.gameObject);
+            currentPastedTarget = null;
+            ShowTemporaryPrompt("Cut " + type, 1.2f);
+        }
 
     private void UpdatePromptText()
     {

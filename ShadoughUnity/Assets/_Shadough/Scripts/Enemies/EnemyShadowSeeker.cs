@@ -360,7 +360,16 @@ public class EnemyShadowSeeker : MonoBehaviour
             return;
         }
 
+        ShadowSeekerState previousState = currentState;
+
         currentState = nextState;
+
+        if (previousState != ShadowSeekerState.ChasingPlayer
+            && nextState == ShadowSeekerState.ChasingPlayer)
+        {
+            PlayDetectionSound();
+        }
+
         ApplyStateFeedback();
 
         if (logStateChanges)
@@ -514,5 +523,15 @@ public class EnemyShadowSeeker : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, attackDistance);
+    }
+    private void PlayDetectionSound()
+    {
+        if (AudioManager.Instance != null
+            && AudioManager.Instance.shadowSeeker != null)
+        {
+            AudioManager.Instance.PlaySFX(
+                AudioManager.Instance.shadowSeeker
+            );
+        }
     }
 }

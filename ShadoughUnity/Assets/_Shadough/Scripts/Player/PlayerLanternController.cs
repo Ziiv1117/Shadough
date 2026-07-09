@@ -132,10 +132,12 @@ public class PlayerLanternController : MonoBehaviour
 
         isPlacingLantern = false;
         isLanternPlanted = true;
+
         if (lanternObject != null)
         {
             Vector3 plantedPosition = transform.position + (Vector3)GetPlacedLanternOffset(pendingPlaceDirection);
             plantedPosition.z = lanternObject.transform.position.z;
+
             lanternObject.transform.SetParent(GetLightsRoot(), true);
             lanternObject.transform.position = plantedPosition;
             lanternObject.transform.rotation = Quaternion.identity;
@@ -143,6 +145,12 @@ public class PlayerLanternController : MonoBehaviour
         }
 
         ApplyVisualState();
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.lantern);
+        }
+
         Debug.Log("Lantern planted");
     }
 

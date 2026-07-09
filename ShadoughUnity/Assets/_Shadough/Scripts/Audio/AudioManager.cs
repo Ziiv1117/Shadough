@@ -4,27 +4,35 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    [Header("Background Music")]
+    [Header("Audio Sources")]
     public AudioSource bgmSource;
-
-    [Header("Sound Effects")]
     public AudioSource sfxSource;
 
-    [Header("Background Music Clips")]
+
+    [Header("Background Music")]
     public AudioClip bgmMainGameplay;
     public AudioClip bgmVictory;
 
-    [Header("Sound Effect Clips")]
+
+    [Header("Player SFX")]
     public AudioClip footstep;
     public AudioClip cutShadow;
     public AudioClip pasteShadow;
     public AudioClip revealShadow;
     public AudioClip lantern;
+
+
+    [Header("Interaction SFX")]
     public AudioClip key;
     public AudioClip doorOpen;
     public AudioClip pressurePlate;
     public AudioClip button;
+
+
+    [Header("Enemy SFX")]
     public AudioClip shadowSeeker;
+
+
 
     private void Awake()
     {
@@ -32,16 +40,17 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-
-            // 游戏开始自动播放主BGM
-            PlayBGM(bgmMainGameplay);
         }
         else
         {
             Destroy(gameObject);
             return;
         }
+
+        PlayBGM(bgmMainGameplay);
     }
+
+
 
     public void PlayBGM(AudioClip clip)
     {
@@ -52,10 +61,7 @@ public class AudioManager : MonoBehaviour
         bgmSource.Play();
     }
 
-    public void StopBGM()
-    {
-        bgmSource.Stop();
-    }
+
 
     public void PlaySFX(AudioClip clip)
     {
