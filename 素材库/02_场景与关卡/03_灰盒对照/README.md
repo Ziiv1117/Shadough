@@ -1,35 +1,35 @@
-# Level Blockouts
+# Level 01 Pixel Blockout
 
-本目录是 P0 关卡灰盒对照图，用于后续 Unity 搭建时核对路径、阻挡、交互点、触发区和出入口。
+本目录保存当前完整地图的像素级灰盒对照，用于后续 Unity 搭建时核对可行走区域、阻挡、水体、出生点、出口和关键机关点。
 
-这些图不是最终美术，不应直接作为游戏背景使用。
+这些图不是最终美术，不应直接作为游戏背景使用。最终美术以 `../05_最终地图/level01_full_map.png` 为准。
 
 ## 文件
 
 | 文件 | 内容 |
 | --- | --- |
-| `blockout_01_outside_river.png` | 第一关：府邸外、河道、树影桥区域 |
-| `blockout_02_mansion_key_lock.png` | 第二关：府邸院内、钥匙影和锁门区域 |
-| `blockout_03_tower_press_plate.png` | 第三关：灯塔/钟塔入口、压板机关区域 |
-| `blockout_04_lure_corridor.png` | 第四关：诱饵通道、寻影兽活动占位区域 |
-| `blockout_05_final_clock_core.png` | 第五关：最终钟核房间 |
-| `level_blockouts_contact_sheet.png` | 五张灰盒总览 |
-| `level_blockouts_manifest.json` | 对应的坐标、区域、出入口和说明 |
+| `level01_full_map_blockout.png` | OpenCV 像素分类灰盒图，尺寸与最终地图一致 |
+| `level01_full_map_blockout_overlay.png` | 像素分类灰盒叠在最终地图上的对齐检查图 |
+| `level01_full_map_pixel_outline_overlay.png` | 1px 红色外轮廓贴边检查图 |
+| `level01_full_map_pixel_footprint_mask.png` | 前景占用区域黑白像素 mask |
+| `level01_full_map_pixel_class_mask.png` | 原始分类 id mask |
+| `level01_full_map_blockout_contact_sheet.png` | 灰盒、叠图、轮廓和 class mask 的浏览总览 |
+| `level01_full_map_blockout_manifest.json` | OpenCV 分割规则、像素统计、输出文件和场景锚点坐标 |
 
 ## 颜色含义
 
 | 颜色 | 含义 |
 | --- | --- |
-| 绿色圆点 | 玩家出生点 |
-| 黄色圆点 | 出口/下一关入口 |
-| 橙色块 | 可交互物或交互源 |
-| 紫色区域 | 触发区 |
-| 深紫区域 | 危险/寻影兽活动占位区 |
-| 深色块 | 阻挡物 |
-| 蓝色区域 | 水体阻挡 |
+| 灰色区域 | 石板/室内地面候选像素 |
+| 绿色区域 | 草地候选像素 |
+| 蓝色区域 | 水体阻挡候选像素 |
+| 黑色区域 | 墙体、阴影、道具或不可通行结构候选像素 |
+| 青色区域 | 屋顶或青瓦结构候选像素 |
+| 红色轮廓 | 从最终地图前景像素提取的 1px 外边界 |
 
 ## 使用建议
 
-- 用 `level_blockouts_manifest.json` 作为 Unity 初搭时的摆放参考。
-- 美术替换时优先参考 `../01_房间效果图` 里的当前房间效果图。
-- 交互物最终应从 `../02_环境拆分素材` 中拆成独立 Sprite 或 Prefab。
+- Unity 对齐时同时导入 `../05_最终地图/level01_full_map.png`、`level01_full_map_blockout_overlay.png` 和 `level01_full_map_pixel_outline_overlay.png`，三者使用相同 PPU 和 Pivot。
+- 用 `level01_full_map_pixel_footprint_mask.png` 和 `level01_full_map_pixel_class_mask.png` 作为像素级参考，再在 Unity 中简化成 Collider2D、Trigger 和场景锚点。
+- `level01_full_map_blockout_manifest.json` 里保留了 OpenCV 分割规则、像素统计和近似场景锚点。
+- 当前不保留拆分素材；后续如需独立 Sprite 或 Prefab，再从完整地图重新提取。
