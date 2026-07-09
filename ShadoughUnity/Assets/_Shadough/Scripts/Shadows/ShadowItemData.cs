@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class ShadowItemData
@@ -6,6 +6,8 @@ public class ShadowItemData
     public ShadowType shadowType = ShadowType.None;
     public string displayName;
     public Sprite sprite;
+    public Sprite pastedSprite;
+    public Sprite inventoryIcon;
     public SpriteDrawMode spriteDrawMode = SpriteDrawMode.Simple;
     public Vector2 spriteSize = Vector2.one;
     public Vector3 localScale = Vector3.one;
@@ -55,3 +57,4 @@ public class ShadowItemData
         return true;
     }
 }
+

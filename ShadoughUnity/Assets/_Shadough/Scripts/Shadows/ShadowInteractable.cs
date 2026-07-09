@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
@@ -22,6 +22,8 @@ public class ShadowInteractable : MonoBehaviour
     [SerializeField] private bool canTriggerMechanism;
 
     [Header("Visual")]
+    [SerializeField] private Sprite pastedSprite;
+    [SerializeField] private Sprite inventoryIcon;
     [SerializeField] private SpriteRenderer shadowRenderer;
     [SerializeField, Range(0f, 1f)] private float cutAlpha = 0f;
 
@@ -106,6 +108,8 @@ public class ShadowInteractable : MonoBehaviour
             shadowType = shadowType,
             displayName = string.IsNullOrEmpty(displayName) ? name : displayName,
             sprite = shadowRenderer != null ? shadowRenderer.sprite : null,
+            pastedSprite = pastedSprite,
+            inventoryIcon = inventoryIcon,
             spriteDrawMode = shadowRenderer != null ? shadowRenderer.drawMode : SpriteDrawMode.Simple,
             spriteSize = shadowRenderer != null ? shadowRenderer.size : Vector2.one,
             localScale = transform.localScale,
@@ -177,3 +181,4 @@ public class ShadowInteractable : MonoBehaviour
         shadowRenderer.enabled = cutAlpha > 0f;
     }
 }
+

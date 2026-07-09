@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
@@ -461,7 +461,7 @@ MonoBehaviour:
   showSelectionOutline: 1
   selectionOutline: {fileID: 0}
   outlineWidth: 0.04
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineColor: {r: 1, g: 0.72, b: 0.24, a: 1}
   outlinePadding: 0.08
 --- !u!114 &218
 MonoBehaviour:
@@ -483,8 +483,8 @@ MonoBehaviour:
   showRangeCircle: 1
   circleSegments: 64
   circleLineWidth: 0.03
-  circleColor: {r: 1, g: 1, b: 1, a: 0.35}
-  previewColor: {r: 0, g: 0, b: 0, a: 0.45}
+  circleColor: {r: 1, g: 0.78, b: 0.32, a: 0.35}
+  previewColor: {r: 1, g: 0.78, b: 0.32, a: 0.45}
 --- !u!114 &219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,6 +516,19 @@ MonoBehaviour:
   lanternCollider: {fileID: 2303}
   heldColor: {r: 1, g: 0.86, b: 0.45, a: 1}
   plantedColor: {r: 1, g: 0.62, b: 0.22, a: 1}
+  lanternHaloSprite: {fileID: 21300000, guid: 03040000000000000000000000000016, type: 3}
+  lanternRoundMaskSprite: {fileID: 21300000, guid: 03040000000000000000000000000014, type: 3}
+  lanternDirectionalMaskSprite: {fileID: 21300000, guid: 03040000000000000000000000000015, type: 3}
+  haloRenderer: {fileID: 0}
+  roundMaskRenderer: {fileID: 0}
+  directionalMaskRenderer: {fileID: 0}
+  haloScale: {x: 1.6, y: 1.6}
+  roundMaskScale: {x: 1.9, y: 1.9}
+  directionalMaskScale: {x: 2.2, y: 2.2}
+  haloColor: {r: 1, g: 0.74, b: 0.28, a: 0.55}
+  roundMaskColor: {r: 1, g: 0.78, b: 0.42, a: 0.24}
+  directionalMaskColor: {r: 1, g: 0.7, b: 0.28, a: 0.18}
+  lightVisualSortingOrder: 17
   moveThreshold: 0.01
 --- !u!114 &220
 MonoBehaviour:
@@ -530,7 +543,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selfCutKey: 113
-  playerShadowSprite: {fileID: 0}
+  playerShadowSprite: {fileID: 21300000, guid: 03040000000000000000000000000007, type: 3}
+  pastedPlayerShadowSprite: {fileID: 21300000, guid: 03040000000000000000000000000008, type: 3}
+  inventoryIcon: {fileID: 21300000, guid: 03040000000000000000000000000010, type: 3}
   shadowScale: {x: 1, y: 0.6, z: 1}
   colliderSize: {x: 0.9, y: 0.5}
   colliderOffset: {x: 0, y: 0}
@@ -1235,8 +1250,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0.05, b: 0.02, a: 0.46}
+  m_Sprite: {fileID: 21300000, guid: 03040000000000000000000000000001, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.58}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -1294,6 +1309,8 @@ MonoBehaviour:
   canAttractEnemy: 0
   canBlock: 0
   canTriggerMechanism: 0
+  pastedSprite: {fileID: 21300000, guid: 03040000000000000000000000000002, type: 3}
+  inventoryIcon: {fileID: 21300000, guid: 0304000000000000000000000000000d, type: 3}
   shadowRenderer: {fileID: 712}
   cutAlpha: 0
 --- !u!114 &715
@@ -1451,10 +1468,11 @@ MonoBehaviour:
   holdToReveal: 1
   isRevealActive: 0
   darkOverlayGroup: {fileID: 0}
-  overlayAlpha: 0.25
-  cuttableHighlightColor: {r: 0.05, g: 0.75, b: 1, a: 1}
-  pastedHighlightColor: {r: 1, g: 0.9, b: 0.25, a: 0.9}
-  interactableHighlightColor: {r: 0.35, g: 1, b: 0.45, a: 1}
+  overlayTextureAsset: {fileID: 2800000, guid: 03040000000000000000000000000017, type: 3}
+  overlayAlpha: 0.42
+  cuttableHighlightColor: {r: 1, g: 0.78, b: 0.24, a: 1}
+  pastedHighlightColor: {r: 0.95, g: 0.36, b: 0.18, a: 0.9}
+  interactableHighlightColor: {r: 0.95, g: 0.68, b: 0.32, a: 1}
   showInputHint: 0
   inputHintPosition: {x: 18, y: 18}
   inputHintSize: {x: 300, y: 146}
@@ -2436,8 +2454,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.02, g: 0.08, b: 0.04, a: 0.52}
+  m_Sprite: {fileID: 21300000, guid: 03040000000000000000000000000003, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -2495,6 +2513,8 @@ MonoBehaviour:
   canAttractEnemy: 0
   canBlock: 0
   canTriggerMechanism: 1
+  pastedSprite: {fileID: 21300000, guid: 03040000000000000000000000000004, type: 3}
+  inventoryIcon: {fileID: 21300000, guid: 0304000000000000000000000000000e, type: 3}
   shadowRenderer: {fileID: 2402}
   cutAlpha: 0
 --- !u!1 &2500
@@ -3035,8 +3055,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.01, g: 0.07, b: 0.035, a: 0.55}
+  m_Sprite: {fileID: 21300000, guid: 03040000000000000000000000000005, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.92}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -3094,6 +3114,8 @@ MonoBehaviour:
   canAttractEnemy: 0
   canBlock: 0
   canTriggerMechanism: 0
+  pastedSprite: {fileID: 21300000, guid: 03040000000000000000000000000006, type: 3}
+  inventoryIcon: {fileID: 21300000, guid: 0304000000000000000000000000000f, type: 3}
   shadowRenderer: {fileID: 2902}
   cutAlpha: 0
 --- !u!1 &3000
@@ -5198,3 +5220,4 @@ Transform:
   m_Father: {fileID: 301}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+

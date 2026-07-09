@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
@@ -64,9 +64,9 @@ public class PastedShadowObject : MonoBehaviour
 
         if (spriteRenderer != null)
         {
-            spriteRenderer.sprite = data.sprite;
+            spriteRenderer.sprite = ResolvePastedSprite(data);
             ApplyRendererShape(spriteRenderer, data);
-            spriteRenderer.color = new Color(0f, 0f, 0f, 0.65f);
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.88f);
             spriteRenderer.sortingOrder = 20;
         }
 
@@ -139,6 +139,8 @@ public class PastedShadowObject : MonoBehaviour
             shadowType = shadowType,
             displayName = itemName,
             sprite = spriteRenderer != null ? spriteRenderer.sprite : null,
+            pastedSprite = sourceData != null && sourceData.pastedSprite != null ? sourceData.pastedSprite : spriteRenderer != null ? spriteRenderer.sprite : null,
+            inventoryIcon = sourceData != null ? sourceData.inventoryIcon : null,
             spriteDrawMode = spriteRenderer != null ? spriteRenderer.drawMode : SpriteDrawMode.Simple,
             spriteSize = spriteRenderer != null ? spriteRenderer.size : Vector2.one,
             localScale = transform.localScale,
@@ -157,6 +159,16 @@ public class PastedShadowObject : MonoBehaviour
             recallBlocked = RecallBlocked,
             recallBlockedMessage = RecallBlockedMessage
         };
+    }
+
+    private Sprite ResolvePastedSprite(ShadowItemData data)
+    {
+        if (data != null && data.pastedSprite != null)
+        {
+            return data.pastedSprite;
+        }
+
+        return data != null ? data.sprite : null;
     }
 
     private void ApplyRendererShape(SpriteRenderer renderer, ShadowItemData data)
@@ -188,3 +200,5 @@ public class PastedShadowObject : MonoBehaviour
         }
     }
 }
+
+

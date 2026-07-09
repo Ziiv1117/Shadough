@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reflection;
 using UnityEngine;
 
@@ -41,6 +41,21 @@ public class PlayerLanternController : MonoBehaviour
     [SerializeField] private Color heldColor = new Color(1f, 0.86f, 0.45f, 1f);
     [SerializeField] private Color plantedColor = new Color(1f, 0.62f, 0.22f, 1f);
 
+    [Header("Lighting Sprites")]
+    [SerializeField] private Sprite lanternHaloSprite;
+    [SerializeField] private Sprite lanternRoundMaskSprite;
+    [SerializeField] private Sprite lanternDirectionalMaskSprite;
+    [SerializeField] private SpriteRenderer haloRenderer;
+    [SerializeField] private SpriteRenderer roundMaskRenderer;
+    [SerializeField] private SpriteRenderer directionalMaskRenderer;
+    [SerializeField] private Vector2 haloScale = new Vector2(1.6f, 1.6f);
+    [SerializeField] private Vector2 roundMaskScale = new Vector2(1.9f, 1.9f);
+    [SerializeField] private Vector2 directionalMaskScale = new Vector2(2.2f, 2.2f);
+    [SerializeField] private Color haloColor = new Color(1f, 0.74f, 0.28f, 0.55f);
+    [SerializeField] private Color roundMaskColor = new Color(1f, 0.78f, 0.42f, 0.24f);
+    [SerializeField] private Color directionalMaskColor = new Color(1f, 0.7f, 0.28f, 0.18f);
+    [SerializeField] private int lightVisualSortingOrder = 17;
+
     [Header("Facing")]
     [SerializeField] private float moveThreshold = 0.01f;
 
@@ -78,6 +93,8 @@ public class PlayerLanternController : MonoBehaviour
         {
             FollowHeldPoint();
         }
+
+        UpdateLightingVisuals();
     }
 
     private void ToggleLantern()
@@ -286,6 +303,7 @@ public class PlayerLanternController : MonoBehaviour
         }
 
         EnsureOptionalLight2D(lanternObject);
+        EnsureLightingVisuals();
 
         if (lightPoint == null)
         {
@@ -348,6 +366,93 @@ public class PlayerLanternController : MonoBehaviour
         }
     }
 
+    private void EnsureLightingVisuals()
+    {
+        if (lanternObject == null)
+        {
+            return;
+        }
+
+        haloRenderer = EnsureChildLightRenderer("LanternWarmHalo", haloRenderer, lanternHaloSprite, haloColor, haloScale, lightVisualSortingOrder);
+        roundMaskRenderer = EnsureChildLightRenderer("LanternRoundMask", roundMaskRenderer, lanternRoundMaskSprite, roundMaskColor, roundMaskScale, lightVisualSortingOrder - 1);
+        directionalMaskRenderer = EnsureChildLightRenderer("LanternDirectionalMask", directionalMaskRenderer, lanternDirectionalMaskSprite, directionalMaskColor, directionalMaskScale, lightVisualSortingOrder - 2);
+        UpdateLightingVisuals();
+    }
+
+    private SpriteRenderer EnsureChildLightRenderer(string childName, SpriteRenderer renderer, Sprite sprite, Color color, Vector2 scale, int sortingOrder)
+    {
+        if (sprite == null)
+        {
+            return renderer;
+        }
+
+        if (renderer == null)
+        {
+            Transform child = lanternObject.transform.Find(childName);
+            if (child == null)
+            {
+                GameObject childObject = new GameObject(childName);
+                childObject.transform.SetParent(lanternObject.transform, false);
+                child = childObject.transform;
+            }
+
+            renderer = child.GetComponent<SpriteRenderer>();
+            if (renderer == null)
+            {
+                renderer = child.gameObject.AddComponent<SpriteRenderer>();
+            }
+        }
+
+        renderer.sprite = sprite;
+        renderer.color = color;
+        renderer.sortingOrder = sortingOrder;
+        renderer.transform.localPosition = Vector3.zero;
+        renderer.transform.localScale = new Vector3(scale.x, scale.y, 1f);
+        return renderer;
+    }
+
+    private void UpdateLightingVisuals()
+    {
+        bool showLightVisuals = lanternObject != null;
+        ApplyLightRenderer(haloRenderer, lanternHaloSprite, haloColor, haloScale, showLightVisuals);
+        ApplyLightRenderer(roundMaskRenderer, lanternRoundMaskSprite, roundMaskColor, roundMaskScale, showLightVisuals);
+        ApplyLightRenderer(directionalMaskRenderer, lanternDirectionalMaskSprite, directionalMaskColor, directionalMaskScale, showLightVisuals);
+
+        if (directionalMaskRenderer != null)
+        {
+            directionalMaskRenderer.transform.localRotation = GetDirectionalMaskRotation();
+        }
+    }
+
+    private void ApplyLightRenderer(SpriteRenderer renderer, Sprite sprite, Color color, Vector2 scale, bool show)
+    {
+        if (renderer == null)
+        {
+            return;
+        }
+
+        renderer.sprite = sprite;
+        renderer.color = color;
+        renderer.transform.localPosition = Vector3.zero;
+        renderer.transform.localScale = new Vector3(scale.x, scale.y, 1f);
+        renderer.enabled = show && sprite != null;
+    }
+
+    private Quaternion GetDirectionalMaskRotation()
+    {
+        switch (facingDirection)
+        {
+            case FacingDirection.Up:
+                return Quaternion.Euler(0f, 0f, 90f);
+            case FacingDirection.Left:
+                return Quaternion.Euler(0f, 0f, 180f);
+            case FacingDirection.Down:
+                return Quaternion.Euler(0f, 0f, -90f);
+            default:
+                return Quaternion.identity;
+        }
+    }
+
     private Transform GetLightsRoot()
     {
         GameObject lightsRoot = GameObject.Find("Lights");
@@ -375,6 +480,7 @@ public class PlayerLanternController : MonoBehaviour
         }
 
         SetLanternLightEnabled(true);
+        UpdateLightingVisuals();
     }
 
     private void SetLanternLightEnabled(bool enabled)
@@ -413,5 +519,13 @@ public class PlayerLanternController : MonoBehaviour
         retrieveRange = Mathf.Max(0.1f, retrieveRange);
         placeAnimationDelay = Mathf.Max(0f, placeAnimationDelay);
         moveThreshold = Mathf.Max(0.001f, moveThreshold);
+        haloScale.x = Mathf.Max(0.01f, haloScale.x);
+        haloScale.y = Mathf.Max(0.01f, haloScale.y);
+        roundMaskScale.x = Mathf.Max(0.01f, roundMaskScale.x);
+        roundMaskScale.y = Mathf.Max(0.01f, roundMaskScale.y);
+        directionalMaskScale.x = Mathf.Max(0.01f, directionalMaskScale.x);
+        directionalMaskScale.y = Mathf.Max(0.01f, directionalMaskScale.y);
     }
 }
+
+

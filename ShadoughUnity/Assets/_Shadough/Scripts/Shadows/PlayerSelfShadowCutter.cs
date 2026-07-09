@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(ShadowInventory))]
 public class PlayerSelfShadowCutter : MonoBehaviour
@@ -8,6 +8,8 @@ public class PlayerSelfShadowCutter : MonoBehaviour
 
     [Header("Player Shadow")]
     [SerializeField] private Sprite playerShadowSprite;
+    [SerializeField] private Sprite pastedPlayerShadowSprite;
+    [SerializeField] private Sprite inventoryIcon;
     [SerializeField] private Vector3 shadowScale = new Vector3(1.2f, 1.8f, 1f);
     [SerializeField] private Vector2 colliderSize = new Vector2(1f, 1.6f);
     [SerializeField] private Vector2 colliderOffset = Vector2.zero;
@@ -91,6 +93,8 @@ public class PlayerSelfShadowCutter : MonoBehaviour
             shadowType = ShadowType.Player,
             displayName = "Player Shadow",
             sprite = playerShadowSprite != null ? playerShadowSprite : GetFallbackSprite(),
+            pastedSprite = pastedPlayerShadowSprite != null ? pastedPlayerShadowSprite : playerShadowSprite,
+            inventoryIcon = inventoryIcon,
             spriteDrawMode = SpriteDrawMode.Simple,
             spriteSize = colliderSize,
             localScale = shadowScale,
@@ -135,3 +139,4 @@ public class PlayerSelfShadowCutter : MonoBehaviour
         cooldown = Mathf.Max(0f, cooldown);
     }
 }
+

@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using UnityEngine;
 
 public class ShadowStatusUI : MonoBehaviour
@@ -6,6 +6,7 @@ public class ShadowStatusUI : MonoBehaviour
     [SerializeField] private ShadowInventory inventory;
     [SerializeField] private Vector2 panelOffset = new Vector2(14f, 14f);
     [SerializeField] private Vector2 panelSize = new Vector2(360f, 32f);
+    [SerializeField] private Vector2 iconSize = new Vector2(20f, 20f);
     [SerializeField] private bool hideWhileTutorialPromptOpen = true;
 
     private readonly StringBuilder textBuilder = new StringBuilder(160);
@@ -37,6 +38,31 @@ public class ShadowStatusUI : MonoBehaviour
         GUI.Label(new Rect(panelRect.x + 10f, panelRect.y + 6f, panelRect.width - 20f, panelRect.height - 8f),
             BuildStatusText(),
             textStyle);
+    }
+
+    private float DrawInventoryIcon(Rect panelRect)
+    {
+        if (inventory == null || !inventory.HasShadow())
+        {
+            return 0f;
+        }
+
+        Sprite icon = inventory.CurrentShadowData.inventoryIcon;
+        if (icon == null || icon.texture == null)
+        {
+            return 0f;
+        }
+
+        Rect iconRect = new Rect(panelRect.x + 8f, panelRect.y + (panelRect.height - iconSize.y) * 0.5f, iconSize.x, iconSize.y);
+        GUI.DrawTextureWithTexCoords(iconRect, icon.texture, GetSpriteTextureCoords(icon));
+        return iconSize.x + 8f;
+    }
+
+    private Rect GetSpriteTextureCoords(Sprite sprite)
+    {
+        Rect rect = sprite.textureRect;
+        Texture texture = sprite.texture;
+        return new Rect(rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height / texture.height);
     }
 
     private string BuildStatusText()
@@ -117,5 +143,8 @@ public class ShadowStatusUI : MonoBehaviour
         panelSize.y = Mathf.Clamp(panelSize.y, 28f, 40f);
         panelOffset.x = Mathf.Max(0f, panelOffset.x);
         panelOffset.y = Mathf.Max(0f, panelOffset.y);
+        iconSize.x = Mathf.Max(8f, iconSize.x);
+        iconSize.y = Mathf.Max(8f, iconSize.y);
     }
 }
+

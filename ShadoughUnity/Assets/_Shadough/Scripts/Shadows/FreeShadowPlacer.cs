@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(ShadowInventory))]
 public class FreeShadowPlacer : MonoBehaviour
@@ -152,9 +152,9 @@ public class FreeShadowPlacer : MonoBehaviour
         pastedObject.transform.localScale = data.localScale;
 
         SpriteRenderer renderer = pastedObject.AddComponent<SpriteRenderer>();
-        renderer.sprite = data.sprite != null ? data.sprite : fallbackSprite;
+        renderer.sprite = ResolvePastedSprite(data);
         ApplyRendererShape(renderer, data);
-        renderer.color = new Color(0f, 0f, 0f, 0.65f);
+        renderer.color = new Color(1f, 1f, 1f, 0.88f);
         renderer.sortingOrder = 20;
 
         BoxCollider2D collider = pastedObject.AddComponent<BoxCollider2D>();
@@ -165,6 +165,21 @@ public class FreeShadowPlacer : MonoBehaviour
         PastedShadowObject pastedShadow = pastedObject.AddComponent<PastedShadowObject>();
         pastedShadow.Initialize(data);
         return pastedShadow;
+    }
+
+    private Sprite ResolvePastedSprite(ShadowItemData data)
+    {
+        if (data != null && data.pastedSprite != null)
+        {
+            return data.pastedSprite;
+        }
+
+        if (data != null && data.sprite != null)
+        {
+            return data.sprite;
+        }
+
+        return fallbackSprite;
     }
 
     private void ApplyRendererShape(SpriteRenderer renderer, ShadowItemData data)
@@ -332,3 +347,5 @@ public class FreeShadowPlacer : MonoBehaviour
         pasteAreaCheckRadius = Mathf.Max(0.05f, pasteAreaCheckRadius);
     }
 }
+
+

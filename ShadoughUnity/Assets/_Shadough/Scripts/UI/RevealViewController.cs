@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class RevealViewController : MonoBehaviour
@@ -10,6 +10,7 @@ public class RevealViewController : MonoBehaviour
 
     [Header("Overlay")]
     [SerializeField] private CanvasGroup darkOverlayGroup;
+    [SerializeField] private Texture2D overlayTextureAsset;
     [SerializeField, Range(0f, 1f)] private float overlayAlpha = 0.35f;
 
     [Header("Highlight Colors")]
@@ -183,6 +184,18 @@ public class RevealViewController : MonoBehaviour
         GUI.color = previousColor;
     }
 
+    private Texture2D GetFallbackOverlayTexture()
+    {
+        if (overlayTexture == null)
+        {
+            overlayTexture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+            overlayTexture.SetPixel(0, 0, Color.white);
+            overlayTexture.Apply();
+        }
+
+        return overlayTexture;
+    }
+
     private void DrawInputHint()
     {
         string revealKeyText = GetRevealKeyDisplayName();
@@ -230,3 +243,4 @@ public class RevealViewController : MonoBehaviour
         overlayAlpha = Mathf.Clamp01(overlayAlpha);
     }
 }
+
