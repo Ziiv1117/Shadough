@@ -3,6 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class TopdownFinalClockCore : MonoBehaviour
 {
+    [Header("Visuals")]
+    [SerializeField] private SpriteRenderer coreRenderer;
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite activeSprite;
+
     [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private string promptText = "Press E to start Clock Core";
@@ -21,6 +26,7 @@ public class TopdownFinalClockCore : MonoBehaviour
     private void Awake()
     {
         SetTriggerCollider();
+        RefreshVisual();
     }
 
     private void Update()
@@ -71,6 +77,7 @@ public class TopdownFinalClockCore : MonoBehaviour
         }
 
         isActivated = true;
+        RefreshVisual();
         Debug.Log(logMessage);
     }
 
@@ -89,6 +96,7 @@ public class TopdownFinalClockCore : MonoBehaviour
     private void OnValidate()
     {
         SetTriggerCollider();
+        RefreshVisual();
     }
 
     private void SetTriggerCollider()
@@ -97,6 +105,25 @@ public class TopdownFinalClockCore : MonoBehaviour
         if (triggerCollider != null)
         {
             triggerCollider.isTrigger = true;
+        }
+    }
+
+    private void RefreshVisual()
+    {
+        if (coreRenderer == null)
+        {
+            coreRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        if (coreRenderer == null)
+        {
+            return;
+        }
+
+        Sprite targetSprite = isActivated ? activeSprite : idleSprite;
+        if (targetSprite != null)
+        {
+            coreRenderer.sprite = targetSprite;
         }
     }
 }

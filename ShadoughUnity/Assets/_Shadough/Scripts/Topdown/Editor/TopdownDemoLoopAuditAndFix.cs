@@ -327,7 +327,7 @@ public static class TopdownDemoLoopAuditAndFix
         report.AppendLine("Map sprite visible: " + PassFail(HasVisibleSprite("Level01_FinalMap_Reference", "level01_full_map")));
         SpriteRenderer outline = FindComponent<SpriteRenderer>("Level01_OutlineOverlay_Reference");
         report.AppendLine("Outline hidden: " + PassFail(outline != null && !outline.enabled));
-        report.AppendLine("Key entity visible: " + PassFail(HasVisibleSprite("KeySource_Topdown", "Key_Normal")));
+        report.AppendLine("Key entity visible: " + PassFail(HasVisibleSprite("KeySource_Topdown", "key_normal")));
     }
 
     private static void RunLanternVisualProbe(StringBuilder report)

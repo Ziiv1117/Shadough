@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(ShadowInteractable))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -23,9 +24,17 @@ public class LightDrivenShadow : MonoBehaviour
     [SerializeField] private float maxAlpha = 0.7f;
     [SerializeField] private bool updateCollider = true;
     [SerializeField] private bool requirePlantedLanternToCut = true;
+    [FormerlySerializedAs("preserveAuthoredTransform")]
+    [SerializeField] private bool lockRootToCaster = true;
+    [SerializeField] private bool spriteRootAtPositiveX = true;
 
     public bool RequiresPlantedLanternToCut => requirePlantedLanternToCut;
     public bool CanCutNow => !requirePlantedLanternToCut || lanternController != null && lanternController.IsLanternPlanted;
+    public Vector3 RootAnchorWorldPosition => casterTransform != null ? casterTransform.position : transform.position;
+    public Vector3 ShadowRootWorldPosition => transform.position
+        + transform.right * (CurrentLength * 0.5f * (spriteRootAtPositiveX ? 1f : -1f));
+
+    private float CurrentLength => shadowRenderer != null ? shadowRenderer.size.x * Mathf.Abs(transform.lossyScale.x) : 0f;
 
     private void Awake()
     {
@@ -77,10 +86,15 @@ public class LightDrivenShadow : MonoBehaviour
 
         Vector3 shadowCenter = casterPosition + (Vector3)(shadowDirection * (length * 0.5f));
         shadowCenter.z = transform.position.z;
-        transform.position = shadowCenter;
 
         float angle = Mathf.Atan2(shadowDirection.y, shadowDirection.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        float visualAngle = spriteRootAtPositiveX ? angle + 180f : angle;
+        if (lockRootToCaster)
+        {
+            transform.position = shadowCenter;
+        }
+
+        transform.rotation = Quaternion.Euler(0f, 0f, visualAngle);
         transform.localScale = Vector3.one;
 
         if (shadowRenderer != null)

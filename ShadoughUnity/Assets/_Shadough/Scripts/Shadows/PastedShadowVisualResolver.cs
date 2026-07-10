@@ -5,6 +5,8 @@ using UnityEngine;
 public class PastedShadowVisualResolver : MonoBehaviour
 {
     [SerializeField] private Sprite treePastedSprite;
+    [SerializeField] private Sprite beamPastedSprite;
+    [SerializeField] private Sprite keyPastedSprite;
     [SerializeField] private float refreshInterval = 0.1f;
 
     private readonly HashSet<int> configuredObjects = new HashSet<int>();
@@ -32,22 +34,38 @@ public class PastedShadowVisualResolver : MonoBehaviour
             return;
         }
 
-        if (!IsPastedTreeShadow(pastedShadow.SourceData))
-        {
-            return;
-        }
-
         SpriteRenderer renderer = pastedShadow.SpriteRenderer;
-        if (treePastedSprite == null || renderer == null)
+        Sprite pastedSprite = ResolvePastedSprite(pastedShadow.SourceData);
+        if (pastedSprite == null || renderer == null)
         {
             return;
         }
 
-        renderer.sprite = treePastedSprite;
+        renderer.sprite = pastedSprite;
         renderer.color = Color.white;
     }
 
-    private static bool IsPastedTreeShadow(ShadowItemData data)
+    private Sprite ResolvePastedSprite(ShadowItemData data)
+    {
+        if (MatchesSource(data, "TreeShadow", "tree_shadow"))
+        {
+            return treePastedSprite;
+        }
+
+        if (MatchesSource(data, "BeamShadow", "beam_shadow"))
+        {
+            return beamPastedSprite;
+        }
+
+        if (MatchesSource(data, "KeyShadow", "key_shadow"))
+        {
+            return keyPastedSprite;
+        }
+
+        return null;
+    }
+
+    private static bool MatchesSource(ShadowItemData data, string sourceToken, string spriteToken)
     {
         if (data == null)
         {
@@ -56,8 +74,8 @@ public class PastedShadowVisualResolver : MonoBehaviour
 
         string sourceName = data.sourceInteractable != null ? data.sourceInteractable.name : string.Empty;
         string spriteName = data.sprite != null ? data.sprite.name : string.Empty;
-        return sourceName.IndexOf("TreeShadow", System.StringComparison.OrdinalIgnoreCase) >= 0
-            || spriteName.IndexOf("tree_shadow", System.StringComparison.OrdinalIgnoreCase) >= 0;
+        return sourceName.IndexOf(sourceToken, System.StringComparison.OrdinalIgnoreCase) >= 0
+            || spriteName.IndexOf(spriteToken, System.StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
     private void OnValidate()
