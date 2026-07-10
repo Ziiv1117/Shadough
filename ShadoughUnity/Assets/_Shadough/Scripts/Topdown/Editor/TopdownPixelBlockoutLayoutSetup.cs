@@ -12,7 +12,7 @@ public static class TopdownPixelBlockoutLayoutSetup
     private const string ReportPath = "Temp/TopdownPixelBlockoutLayoutSetup.report.txt";
     private const string CleanupReportPath = "Temp/TopdownBlockoutCleanup.report.txt";
     private const string PlayProbeRequestPath = "Temp/TopdownPixelBlockoutPlayProbe.request";
-    private const string PlayProbeReportPath = "Temp/TopdownPixelBlockoutPlayProbe.report.txt";
+    private const string PlayProbeReportPath = "Logs/TopdownPixelBlockoutPlayProbe.report.txt";
 
     private const string AccurateRootName = "Level01_Blockout_Accurate";
     private const string MapReferenceRootName = "Level01_MapReference";
@@ -76,6 +76,14 @@ public static class TopdownPixelBlockoutLayoutSetup
     public static void RequestPlayProbeFromMenu()
     {
         File.WriteAllText(FullPath(PlayProbeRequestPath), "play-probe");
+    }
+
+    public static void RunPlayProbeBatch()
+    {
+        File.WriteAllText(FullPath(PlayProbeRequestPath), "play-probe");
+        EditorApplication.update -= TryAutoSetup;
+        EditorApplication.update += TryAutoSetup;
+        TryAutoSetup();
     }
 
     private static void TryAutoSetup()
@@ -757,6 +765,12 @@ public static class TopdownPixelBlockoutLayoutSetup
         switch (playProbeStage)
         {
             case 0:
+                TopdownMenuUIController menuController = Object.FindObjectOfType<TopdownMenuUIController>(true);
+                if (menuController != null)
+                {
+                    menuController.ForceStartGameplayForAutomatedTest();
+                }
+
                 ClearRuntimeProbeShadows();
                 AppendRequiredObjectChecks(playProbeReport);
                 bridgeShadow = CreatePastedShadowFromSource("TreeShadow_Topdown", CrossingPosition);
@@ -921,6 +935,13 @@ public static class TopdownPixelBlockoutLayoutSetup
         File.WriteAllText(FullPath(PlayProbeReportPath), playProbeReport.ToString());
         Debug.Log("Topdown pixel manifest play probe complete. Report: " + FullPath(PlayProbeReportPath));
         playProbeReport = null;
+
+        if (Application.isBatchMode)
+        {
+            EditorApplication.Exit(0);
+            return;
+        }
+
         EditorApplication.isPlaying = false;
     }
 

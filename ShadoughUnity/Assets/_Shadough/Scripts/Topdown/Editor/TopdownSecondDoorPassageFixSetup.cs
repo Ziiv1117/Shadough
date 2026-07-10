@@ -8,11 +8,13 @@ public static class TopdownSecondDoorPassageFixSetup
 {
     private const string ScenePath = "Assets/_Shadough/Scenes/ClockTower_TopdownPrototype.unity";
     private const string ReportPath = "Logs/TopdownSecondDoorPassageFixSetup.report.txt";
-    private const float SideWallThickness = 0.48f;
-    private const float PassageWidth = 1.75f;
-    private const float CenterClearWidth = 1.05f;
-    private const float SideWallLength = 2.2f;
+    private const float SideWallThickness = 0.42f;
+    private const float PassageWidth = 2.35f;
+    private const float CenterClearWidth = 1.45f;
+    private const float SideWallLength = 1.85f;
     private const float PassageProbeLength = 3.2f;
+    private const float RearPathProbeLength = 3.0f;
+    private const float RearPathProbeOffset = 1.45f;
 
     [MenuItem("Shadough/Fix Topdown Second Door Passage")]
     public static void SetupFromMenu()
@@ -72,6 +74,8 @@ public static class TopdownSecondDoorPassageFixSetup
         report.Add("passage.centerClearWidth=" + CenterClearWidth.ToString("0.00"));
         report.Add("sideWall.length=" + SideWallLength.ToString("0.00"));
         report.Add("passage.probeLength=" + PassageProbeLength.ToString("0.00"));
+        report.Add("rearPath.probeLength=" + RearPathProbeLength.ToString("0.00"));
+        report.Add("rearPath.probeOffset=" + RearPathProbeOffset.ToString("0.00"));
         report.Add("door.centralBlockerCount=" + centralBlockers.Count);
         for (int i = 0; i < centralBlockers.Count; i++)
         {
@@ -196,6 +200,15 @@ public static class TopdownSecondDoorPassageFixSetup
             Collider2D blocker = FindEnabledCentralBlocker(doorCollider, routeDirection, sideDirection);
             if (blocker == null)
             {
+                Collider2D rearPathBlocker = FindEnabledRearPathBlocker(doorCollider, routeDirection, sideDirection);
+                if (rearPathBlocker != null && !IsOuterWallBlocker(rearPathBlocker.gameObject))
+                {
+                    blocker = rearPathBlocker;
+                }
+            }
+
+            if (blocker == null)
+            {
                 break;
             }
 
@@ -226,10 +239,13 @@ public static class TopdownSecondDoorPassageFixSetup
         Collider2D remainingBlocker = FindEnabledCentralBlocker(doorCollider, routeDirection, sideDirection);
         string blockerInPassage = remainingBlocker != null ? remainingBlocker.name : string.Empty;
         bool passageClear = remainingBlocker == null;
+        Collider2D rearPathBlocker = FindEnabledRearPathBlocker(doorCollider, routeDirection, sideDirection);
+        string blockerBehindDoor = rearPathBlocker != null ? rearPathBlocker.name : string.Empty;
+        bool rearPathClear = rearPathBlocker == null;
         bool sideWallsBlock = IsSideWallBlocking("Wall_CanUnlockDoor_LeftOuterWall_Blocker") && IsSideWallBlocking("Wall_CanUnlockDoor_RightOuterWall_Blocker");
 
         float playerWidth = ResolvePlayerWidth(player);
-        bool passageWideEnough = PassageWidth >= playerWidth + 0.35f;
+        bool passageWideEnough = PassageWidth >= playerWidth + 0.7f;
 
         doorController.Close();
         Physics2D.SyncTransforms();
@@ -240,6 +256,8 @@ public static class TopdownSecondDoorPassageFixSetup
         report.Add("validate.doorColliderOffWhenOpen=" + PassFail(doorColliderOffWhenOpen));
         report.Add("validate.passageClearWhenOpen=" + PassFail(passageClear));
         report.Add("validate.blockerInPassageWhenOpen=" + (string.IsNullOrEmpty(blockerInPassage) ? "none" : blockerInPassage));
+        report.Add("validate.rearPathClearWhenOpen=" + PassFail(rearPathClear));
+        report.Add("validate.blockerBehindDoorWhenOpen=" + (string.IsNullOrEmpty(blockerBehindDoor) ? "none" : blockerBehindDoor));
         report.Add("validate.sideWallsStillBlock=" + PassFail(sideWallsBlock));
         report.Add("validate.playerWidth=" + playerWidth.ToString("0.00"));
         report.Add("validate.passageWideEnough=" + PassFail(passageWideEnough));
@@ -275,6 +293,37 @@ public static class TopdownSecondDoorPassageFixSetup
             {
                 return collider;
             }
+        }
+
+        return null;
+    }
+
+    private static Collider2D FindEnabledRearPathBlocker(Collider2D doorCollider, Vector2 routeDirection, Vector2 sideDirection)
+    {
+        if (doorCollider == null)
+        {
+            return null;
+        }
+
+        Physics2D.SyncTransforms();
+        Vector2 center = (Vector2)doorCollider.bounds.center + routeDirection * RearPathProbeOffset;
+        float angle = Mathf.Atan2(sideDirection.y, sideDirection.x) * Mathf.Rad2Deg;
+        Vector2 size = new Vector2(CenterClearWidth, RearPathProbeLength);
+        Collider2D[] overlaps = Physics2D.OverlapBoxAll(center, size, angle);
+        for (int i = 0; i < overlaps.Length; i++)
+        {
+            Collider2D overlap = overlaps[i];
+            if (overlap == null
+                || !overlap.enabled
+                || overlap.isTrigger
+                || overlap == doorCollider
+                || !LooksLikeDoorBlocker(overlap.gameObject)
+                || !IsObjectInTargetScene(overlap.gameObject))
+            {
+                continue;
+            }
+
+            return overlap;
         }
 
         return null;
