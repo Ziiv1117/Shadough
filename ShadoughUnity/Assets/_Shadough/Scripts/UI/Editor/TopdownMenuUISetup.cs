@@ -259,7 +259,7 @@ public static class TopdownMenuUISetup
         ConfigureAmbient(panelGlow.gameObject, 0, Vector2.zero, 1.1f, 0.06f, 0.018f, 0f, 0.4f);
 
         TMP_Text title = CreateText(panelRoot, "Title", "PAUSED", 60f, new Color(0.13f, 0.075f, 0.035f, 1f), TextAlignmentOptions.Center);
-        title.rectTransform.anchoredPosition = new Vector2(0f, 285f);
+        title.rectTransform.anchoredPosition = new Vector2(0f, 235f);
         title.rectTransform.sizeDelta = new Vector2(470f, 82f);
         title.fontStyle = FontStyles.Bold;
         title.characterSpacing = 8f;
@@ -305,7 +305,7 @@ public static class TopdownMenuUISetup
         panel.color = new Color(1f, 0.95f, 0.80f, 0.97f);
 
         TMP_Text title = CreateText(panelRoot, "Title", "HOW TO PLAY", 54f, new Color(0.13f, 0.075f, 0.035f, 1f), TextAlignmentOptions.Center);
-        title.rectTransform.anchoredPosition = new Vector2(0f, 315f);
+        title.rectTransform.anchoredPosition = new Vector2(0f, 260f);
         title.rectTransform.sizeDelta = new Vector2(540f, 74f);
         title.fontStyle = FontStyles.Bold;
         title.characterSpacing = 5f;
@@ -319,12 +319,12 @@ public static class TopdownMenuUISetup
             "<color=#B56D27>Hold Shift + E</color> - Cut a revealed shadow\n" +
             "<color=#B56D27>F</color> - Paste the shadow you are holding\n" +
             "Only pasted shadows can activate mechanisms",
-            23f,
+            21f,
             new Color(0.16f, 0.095f, 0.052f, 1f),
             TextAlignmentOptions.TopLeft);
-        leftColumn.rectTransform.anchoredPosition = new Vector2(-175f, 72f);
-        leftColumn.rectTransform.sizeDelta = new Vector2(305f, 470f);
-        leftColumn.lineSpacing = 10f;
+        leftColumn.rectTransform.anchoredPosition = new Vector2(-140f, -55f);
+        leftColumn.rectTransform.sizeDelta = new Vector2(260f, 560f);
+        leftColumn.lineSpacing = 6f;
         leftColumn.enableWordWrapping = true;
         leftColumn.richText = true;
 
@@ -337,17 +337,17 @@ public static class TopdownMenuUISetup
             "<b><color=#8A521F>Goal</color></b>\n" +
             "Use shadows to cross the clock tower ruins\n" +
             "Reach the Final Clock Core and press <color=#B56D27>E</color>",
-            23f,
+            21f,
             new Color(0.16f, 0.095f, 0.052f, 1f),
             TextAlignmentOptions.TopLeft);
-        rightColumn.rectTransform.anchoredPosition = new Vector2(180f, 72f);
-        rightColumn.rectTransform.sizeDelta = new Vector2(305f, 470f);
-        rightColumn.lineSpacing = 10f;
+        rightColumn.rectTransform.anchoredPosition = new Vector2(140f, -55f);
+        rightColumn.rectTransform.sizeDelta = new Vector2(260f, 560f);
+        rightColumn.lineSpacing = 6f;
         rightColumn.enableWordWrapping = true;
         rightColumn.richText = true;
 
         TMP_Text hint = CreateText(panelRoot, "Hint", "Shape the shadow. Cross the impossible.", 25f, new Color(0.48f, 0.27f, 0.12f, 0.95f), TextAlignmentOptions.Center);
-        hint.rectTransform.anchoredPosition = new Vector2(0f, -230f);
+        hint.rectTransform.anchoredPosition = new Vector2(0f, -260f);
         hint.rectTransform.sizeDelta = new Vector2(610f, 56f);
         hint.characterSpacing = 2f;
 
